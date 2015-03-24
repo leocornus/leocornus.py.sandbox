@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.0.2'
+version = '1.0.4'
 name = 'leocornus.py.sandbox'
 
 def read(*rnames):
@@ -36,7 +36,7 @@ setup(
 
     author='Sean Chen',
     author_email='sean.chen@leocorn.com',
-    url='http://github.com/leocornus/leocornus.buildout.cfgrepo/tree/master/sample/python/src/%s' % name,
+    url='http://github.com/leocornus/%s' % name,
     license='GPLv2',
 
     packages=find_packages(exclude=['ez_setup']),
