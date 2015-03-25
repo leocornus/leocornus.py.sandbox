@@ -81,6 +81,8 @@ Return value: the archive file as a object
   ...             if os.path.isfile(path):
   ...                 zip.write(path, path)
   ...     zip.close()
+  ...     # need go back to default home foler.
+  ...     os.chdir(homeFolder)
   ...     return zip
 
 extractInfo
@@ -239,46 +241,35 @@ Archive Plugin
   ...     # full path pattern.
   ...     info = extractInfo(plugin)
   ...     print("""File Name: %s""" % info['fileName'])
-  File Name: pfileone.php
-
-  ...     print("""Plugin Dir: %s""" % info['dirName']) 
-  Plugin Dir: /.../pluginone
-
+  ...     print("""Plugin Dir: %s""" % info['dirName']) # doctest: +ELLIPSIS
   ...     print("""Plugin Name: %s""" % info['folderName'])
-  Plugin Name: pluginone
-
   ...     print("""Version: %s""" % info['version'])
-  Version: 1.0.1
-
   ...     print("""Archive Name: %s""" % info['archiveName'])
-  Archive Name: pluginone.1.0.1.zip
-
   ...     # archive the plugin.
   ...     # check file exist o not.
   ...     archivePath = os.path.join(testFolder, info['archiveName'])
   ...     os.path.exists(archivePath)
-  False
-
   ...     # zip the plugin dir
   ...     zip = archiveFolder(archivePath, testFolder, 
   ...                         info['folderName'])
   ...     os.path.exists(archivePath)
-  True
-
   ...     files = zip.namelist()
   ...     len(files)
-  5
-
   ...     'pluginone/pfileone.php' in files
-  True
-
   ...     'pluginone/pfile2.php' in files
-  True
-
   ...     'pluginone/pfile3.php' in files
-  True
-
   ...     'pluginone/css/styles.css' in files
+  File Name: pfileone.php
+  Plugin Dir: /.../pluginone
+  Plugin Name: pluginone
+  Version: 1.0.1
+  Archive Name: pluginone.1.0.1.zip
+  False
+  True
+  5
+  True
+  True
+  True
   True
 
 Archive Theme
@@ -287,45 +278,34 @@ Archive Theme
   >>> for theme in themes.strip().splitlines():
   ...     info = extractInfo(theme)
   ...     print("""File Name: %s""" % info['fileName'])
-  File Name: style.css
-
-  ...     print("""Theme Dir: %s""" % info['dirName'])
-  Theme Dir: /.../themeone
-
+  ...     print("""Theme Dir: %s""" % info['dirName']) # doctest: +ELLIPSIS
   ...     print("""Theme Name: %s""" % info['folderName'])
-  Theme Name: themeone
-
   ...     print("""Version: %s""" % info['version'])
-  Version: 2.3
-
   ...     print("""Archive Name: %s""" % info['archiveName'])
-  Archive Name: themeone.2.3.zip
-
   ...     # archive the Theme.
   ...     archivePath = os.path.join(testFolder, info['archiveName'])
   ...     os.path.exists(archivePath)
-  False
-
   ...     # zip the plugin dir
   ...     zip = archiveFolder(archivePath, testFolder, 
   ...                         info['folderName'])
   ...     os.path.exists(archivePath)
-  True
-
   ...     files = zip.namelist()
   ...     len(files)
-  5
-
   ...     'themeone/style.css' in files
-  True
-
   ...     'themeone/tfileone.php' in files
-  True
-
   ...     'themeone/tfiletwo.php' in files
-  True
-
   ...     'themeone/image/imgone.jpg' in files
+  File Name: style.css
+  Theme Dir: /.../themeone
+  Theme Name: themeone
+  Version: 2.3
+  Archive Name: themeone.2.3.zip
+  False
+  True
+  5
+  True
+  True
+  True
   True
 
 Questions TODOs
