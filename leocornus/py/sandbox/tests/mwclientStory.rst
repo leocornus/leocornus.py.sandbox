@@ -85,6 +85,13 @@ If the file is not exist, we will skip the whole section.
   ...                         '[[Category: My Testing]]')
   ...     ret = updatePage.save(text, summary='Update Category')
   ...     print(ret['result'])
+  ... else:
+  ...     print """<Site object '...'>
+  ... Testing Page
+  ... Success
+  ... True
+  ... Success"""
+  ...
   <Site object '...'>
   Testing Page
   Success
