@@ -29,7 +29,11 @@ How to find current user's home folder::
 Create a folder::
 
   >>> testFolder = os.path.join(homeFolder, 'testtmp')
+  >>> os.path.exists(testFolder)
+  False
   >>> os.mkdir(testFolder)
+  >>> os.path.exists(testFolder)
+  True
 
 Change current direct director::
 
