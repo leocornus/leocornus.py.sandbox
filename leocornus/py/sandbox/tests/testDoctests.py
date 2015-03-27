@@ -4,6 +4,12 @@ from unittest import TestSuite
 from doctest import DocFileSuite
 from doctest import ELLIPSIS
 from doctest import NORMALIZE_WHITESPACE
+# os module.
+from os import walk
+from os.path import join
+from os.path import dirname
+from os.path import basename
+from os.path import normpath
 
 
 __author__ = "Sean Chen"
@@ -30,42 +36,32 @@ def test_suite():
             ),
         )
 
-    suite.addTest(
-        DocFileSuite(
-            'tests/basicPython.rst',
-            package='leocornus.py.sandbox',
-            optionflags=optionflags,
-            ),
-        )
+    # try to walk through current folder to find all rst files
+    # and then add them to test suite.
+    # This will include all sub folders.
+   
+    # found out current file's folder.
+    testsFolder = dirname(__file__)
+    testsFolderName = basename(testsFolder)
+    # package folder full path
+    pkgFolder = dirname(testsFolder)
 
-    suite.addTest(
-        DocFileSuite(
-            'tests/searchArchiveStory.rst',
-            package='leocornus.py.sandbox',
-            ),
-        )
-
-    suite.addTest(
-        DocFileSuite(
-            'tests/mwclientStory.rst',
-            package='leocornus.py.sandbox',
-            ),
-        )
-
-    suite.addTest(
-        DocFileSuite(
-            'tests/pprintStory.rst',
-            package='leocornus.py.sandbox',
-            ),
-        )
-
-    # hold this for now, we might not depend on fabric.
-    #suite.addTest(
-    #    DocFileSuite(
-    #        'tests/basicLocalFabric.rst',
-    #        package='leocornus.recipe.distribute',
-    #        ),
-    #    )
+    # walk through the current folder, the tests folder.
+    for dirpath, dirnames, filenames in walk(testsFolder):
+        for name in filenames:
+            if name.endswith('.rst'):
+                path = normpath(join(dirpath, name))
+                # get the relative path to package folder.
+                relpath = path.split(pkgFolder)[1][1:]
+                # add to test suite.
+                suite.addTest(
+                    DocFileSuite(
+                        relpath,
+                        package='leocornus.py.sandbox',
+                        setUp=setUp,
+                        optionflags=optionflags,
+                    ),
+                )
 
     return suite
 
