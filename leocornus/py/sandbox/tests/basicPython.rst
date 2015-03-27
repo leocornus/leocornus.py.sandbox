@@ -44,6 +44,50 @@ Get current directory::
   >>> print(os.getcwd()) # doctest: +ELLIPSIS
   /home/.../testtmp
 
+createFile
+~~~~~~~~~~
+
+utility function to create a file in a folder.
+There parameters: folder path, filename, and content for the file.
+There is no return value for this function.
+
+  >>> def createFile(folder, filename, content):
+  ...     fullName = os.path.join(folder, filename)
+  ...     os.system("touch " + fullName)
+  ...     f = open(fullName, 'r+')
+  ...     f.write(content)
+  ...     f.close()
+
+Walk through a directory
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Cases:
+  Walk through a directory and all of its sub-directories to 
+  find all files with extension **.rst**.
+
+Get ready some testing directories and files.
+
+  >>> dOne = os.path.join(testFolder, 'one')
+  >>> dTwo = os.path.join(testFolder, 'two')
+  >>> dOneOne = os.path.join(dOne, 'oneone')
+  >>> os.mkdir(dOne)
+  >>> os.mkdir(dOneOne)
+  >>> os.mkdir(dTwo)
+
+create files.
+
+  >>> createFile(dOne, 'one.rst', '')
+  >>> createFile(dOne, 'one.txt', '')
+  >>> createFile(dOneOne, 'oneone.rst', '')
+  >>> createFile(dTwo, 'two.rst', '')
+  >>> createFile(dTwo, 'two.txt', '')
+
+walk through the testFolder
+
+
+annot access parent directories
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 To avoid get errors lik this::
 
   shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
