@@ -22,7 +22,7 @@ Preparing Testing Folder
 
 Get ready a test folder.
 All testing activities will happen in this folder.
-At the end will remove the whole folder as clean up.
+At the end will remove the whole folder as clean up::
 
   >>> import os
   >>> homeFolder = os.path.expanduser('~')
@@ -48,7 +48,7 @@ createFile
 
 utility function to create a file in a folder.
 There parameters: folder path, filename, and content for the file.
-There is no return value for this function.
+There is no return value for this function::
 
   >>> def createFile(folder, filename, content):
   ...     fullName = os.path.join(folder, filename)
@@ -68,6 +68,8 @@ There parameters:
 :folderName: the name of the folder in the rootFolder.
 
 Return value: the archive file as a object
+
+Here is the function::
 
   >>> def archiveFolder(archivePath, rootFolder, folderName):
   ...     # zip the plugin dir
@@ -102,6 +104,8 @@ Return a dict with the following fields:
 :folderName: the name of the directory without path.
 :version: Version from the file.
 :archiveName: the full path to the archive file.
+
+Here are the function::
 
   >>> def extractInfo(fullFilePath):
   ...     fileName = os.path.basename(fullFilePath)
@@ -141,7 +145,7 @@ a WordPress Plugin::
   Plugin Name: name of plugin
   Version:  2.1.1
 
-Here we will get ready some files for testing...
+Here we will get ready some files for testing::
 
   >>> pluginOne = os.path.join(testFolder, 'pluginone')
   >>> os.mkdir(pluginOne)
@@ -155,12 +159,12 @@ Here we will get ready some files for testing...
   >>> createFile(pluginOne, 'pfileone.php', data)
 
 Add more files here for testing.
-Here are files in pluginOne folder.
+Here are files in pluginOne folder::
 
   >>> createFile(pluginOne, 'pfile2.php', 'some testing code')
   >>> createFile(pluginOne, 'pfile3.php', 'some testing code 3')
 
-Add subfolder css and add some styles.
+Add subfolder css and add some styles::
  
   >>> pluginOneCss = os.path.join(pluginOne, 'css')
   >>> os.mkdir(pluginOneCss)
@@ -176,14 +180,14 @@ identified as a WordPress theme::
   Theme Name: the theme name
   Version: 3.1.0
 
-Create testing folders and files for WordPress theme.
+Create testing folders and files for WordPress theme::
 
   >>> themeOne = os.path.join(testFolder, 'themeone')
   >>> os.mkdir(themeOne)
   >>> os.path.isdir(themeOne)
   True
 
-Create the theme style.css, which tells this is a WordPress theme.
+Create the theme style.css, which tells this is a WordPress theme::
 
   >>> data = """/**
   ...  * Theme Name: theme one
@@ -193,7 +197,7 @@ Create the theme style.css, which tells this is a WordPress theme.
   ... some other infomation **"""
   >>> createFile(themeOne, 'style.css', data)
 
-More files for theme one.
+More files for theme one::
 
   >>> createFile(themeOne, 'tfileone.php', 'file one php')
   >>> createFile(themeOne, 'tfiletwo.php', 'file two php')
@@ -207,7 +211,7 @@ Search and Archive
 
 Search the test folder to find certain string patterns.
 The method **os.system** will not return the result.
-So we are uing the subprocess module.
+So we are uing the subprocess module::
 
   >>> import subprocess
   >>> import zipfile
@@ -218,7 +222,7 @@ Here are the grep patterns for WordPress plugin and theme::
   $ grep -l 'Plugin Name: ' /full/path/plugins/*/*.php
   $ grep -l 'Theme Name: ' /full/path/themes/*/style.css
 
-We only search one level deep in the testing folder.
+We only search one level deep in the testing folder::
 
   >>> pG = "grep -l 'Plugin Name: ' " + testFolder + "/*/*.php" #**
   >>> plugins = subprocess.check_output(pG, shell=True)
@@ -235,6 +239,8 @@ We only search one level deep in the testing folder.
 
 Archive Plugin
 ~~~~~~~~~~~~~~
+
+Go through each plugin::
 
   >>> for plugin in plugins.strip().splitlines():
   ...     # the plugin already has full path, as we grep the 
@@ -274,6 +280,8 @@ Archive Plugin
 
 Archive Theme
 ~~~~~~~~~~~~~
+
+Go through each theme::
 
   >>> for theme in themes.strip().splitlines():
   ...     info = extractInfo(theme)
@@ -325,12 +333,12 @@ work properly.
 Remove Testing Folder
 ---------------------
 
-remove the whole testing folder.
+remove the whole testing folder::
 
   >>> import shutil
   >>> shutil.rmtree(testFolder)
 
-now verify testFolder is removed.
+now verify testFolder is removed::
 
   >>> os.path.isdir(testFolder)
   False
