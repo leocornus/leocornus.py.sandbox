@@ -92,6 +92,7 @@ Get ready some testing directories and files::
 
 create files::
 
+  >>> createFile(testFolder, 'root.rst', '')
   >>> createFile(dOne, 'one.rst', '')
   >>> createFile(dOne, 'one.txt', '')
   >>> createFile(dOneOne, 'oneone.rst', '')
@@ -112,6 +113,8 @@ walk through the testFolder to look for **.rst** files::
   ...             # try to get the relative path based on testFolder.
   ...             relpath = normpath.split(testFolder)[1][1:]
   ...             print(relpath)
+  /home.../root.rst
+  root.rst
   /home.../one/one.rst
   one/one.rst
   /home.../one/oneone/oneone.rst
