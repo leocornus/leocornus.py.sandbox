@@ -49,7 +49,7 @@ createFile
 
 utility function to create a file in a folder.
 There parameters: folder path, filename, and content for the file.
-There is no return value for this function.
+There is no return value for this function::
 
   >>> def createFile(folder, filename, content):
   ...     fullName = os.path.join(folder, filename)
@@ -65,7 +65,7 @@ Cases:
   Walk through a directory and all of its sub-directories to 
   find all files with extension **.rst**.
 
-Get ready some testing directories and files.
+Get ready some testing directories and files::
 
   >>> dOne = os.path.join(testFolder, 'one')
   >>> dTwo = os.path.join(testFolder, 'two')
@@ -74,7 +74,7 @@ Get ready some testing directories and files.
   >>> os.mkdir(dOneOne)
   >>> os.mkdir(dTwo)
 
-create files.
+create files::
 
   >>> createFile(dOne, 'one.rst', '')
   >>> createFile(dOne, 'one.txt', '')
@@ -82,13 +82,31 @@ create files.
   >>> createFile(dTwo, 'two.rst', '')
   >>> createFile(dTwo, 'two.txt', '')
 
-walk through the testFolder
+walk through the testFolder to look for **.rst** files::
 
+  >>> for dirpath, dirnames, filenames in os.walk(testFolder):
+  ...     for name in filenames:
+  ...         # check the extension.
+  ...         if name.endswith('.rst'):
+  ...             # norm path for the rst file.
+  ...             path = os.path.join(dirpath, name)
+  ...             normpath = os.path.normpath(path)
+  ...             # normpath is full path.
+  ...             print(normpath)
+  ...             # try to get the relative path based on testFolder.
+  ...             relpath = normpath.split(testFolder)[1][1:]
+  ...             print(relpath)
+  /home.../one/one.rst
+  one/one.rst
+  /home.../one/oneone/oneone.rst
+  one/oneone/oneone.rst
+  /home.../two/two.rst
+  two/two.rst
 
 annot access parent directories
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To avoid get errors lik this::
+To avoid get errors like this::
 
   shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
 
