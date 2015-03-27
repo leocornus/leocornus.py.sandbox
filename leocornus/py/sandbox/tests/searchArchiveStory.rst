@@ -349,4 +349,17 @@ in post `Basic Python Doctest`_
 +SKIP
   Skip a test.
 
+optionflags
+~~~~~~~~~~~
+
+The **optionflags** could be used to set directives for the whole test case.
+For examples::
+
+  optionflags = (ELLIPSIS | NORMALIZE_WHITESPACE)
+  suite = DocVileSuite(
+    'README.rst',
+    package = 'leocornus.py.sandbox',
+    optionflags = optionflags,
+  )
+
 .. _Basic Python Doctest: https://www.packtpub.com/books/content/basic-doctest-python
