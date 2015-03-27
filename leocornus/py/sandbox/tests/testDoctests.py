@@ -34,6 +34,7 @@ def test_suite():
         DocFileSuite(
             'tests/basicPython.rst',
             package='leocornus.py.sandbox',
+            optionflags=optionflags,
             ),
         )
 
