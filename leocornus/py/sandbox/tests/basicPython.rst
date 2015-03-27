@@ -20,11 +20,24 @@ Obervious things::
 Basic os Module
 ---------------
 
+Import the os module::
+
   >>> import os
 
 How to find current user's home folder::
 
   >>> homeFolder = os.path.expanduser('~')
+
+The **__file__** gives details infor about current file::
+
+  >>> print(__file__)
+  /.../leocornus/py/sandbox/tests/basicPython.rst
+  >>> print(os.path.realpath(__file__))
+  /.../leocornus/py/sandbox/tests/basicPython.rst
+  >>> print('basename: %s' % os.path.basename(__file__))
+  basename: basicPython.rst
+  >>> print('dirname: %s' % os.path.dirname(__file__))
+  dirname: /.../leocornus/py/sandbox/tests
 
 Create a folder::
 
@@ -35,14 +48,17 @@ Create a folder::
   >>> os.path.exists(testFolder)
   True
 
-Change current direct director::
+Change current working directory::
 
   >>> os.chdir(testFolder)
 
-Get current directory::
+Get current working directory::
 
   >>> print(os.getcwd()) # doctest: +ELLIPSIS
   /home/.../testtmp
+  >>> # need change back to home folder to avoid some
+  >>> # error like "cannot access parent directories".
+  >>> os.chdir(homeFolder)
 
 createFile
 ~~~~~~~~~~
