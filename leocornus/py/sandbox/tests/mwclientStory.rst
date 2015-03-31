@@ -100,4 +100,10 @@ If the file is not exist, we will skip the whole section.
 
 Q: What's the output if login success?
 
+Q: Does the page create / update by mwclient_ trigger 
+`MediaWiki hooks`_?
+  mwclient_ using MeidaWiki api.php, which will trigger all hooks.
+
 .. _mwclient: https://github.com/mwclient/mwclient
+.. _MediaWiki hooks: http://www.mediawiki.org/wiki/Manual:Hooks
+.. _MediaWiki api.php: http://www.mediawiki.org/wiki/Manual:Api.php
