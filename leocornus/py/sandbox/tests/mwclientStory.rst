@@ -65,6 +65,7 @@ If the file is not exist, we will skip the whole section.
   ...     path = rc.get('mwclient', 'path')
   ...     username = rc.get('mwclient', 'username')
   ...     password = rc.get('mwclient', 'password')
+  ...     # TODO: need check if those values are set properly!
   ...     site = mwclient.Site(host, path=path)
   ...     print(site) # doctest: +ELLIPSIS
   ...     site.login(username, password)
