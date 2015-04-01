@@ -136,14 +136,23 @@ Here are the function::
 Preparing Testing Files
 -----------------------
 
+Here the testing files are for WordPress plugins and themes.
+Both of them follow `WordPress file header`_ convensions.
+The most important rule is: **one header per line**.
+
 WordPress Plugin
 ~~~~~~~~~~~~~~~~
 
-The following WordPress file header identified as 
+The following `WordPress file header`_ identified as 
 a WordPress Plugin::
 
   Plugin Name: name of plugin
+  Plugin URI: http://www.website.com/download/url
+  Description: one line brief description.
   Version:  2.1.1
+  Author: Some name, team name,
+  Author URI: http://url.to.author
+  Network: true
 
 Here we will get ready some files for testing::
 
@@ -174,11 +183,15 @@ Add subfolder css and add some styles::
 WordPress Theme
 ~~~~~~~~~~~~~~~
 
-The following WordPress file header in file **style.css** 
+The following `WordPress file header`_ in file **style.css** 
 identified as a WordPress theme::
 
   Theme Name: the theme name
+  Theme URI: http://theme.com/one
+  Description: one line description.
   Version: 3.1.0
+  Author: name one,
+  Author URI: http://name.one.url
 
 Create testing folders and files for WordPress theme::
 
@@ -371,3 +384,4 @@ For examples::
   )
 
 .. _Basic Python Doctest: https://www.packtpub.com/books/content/basic-doctest-python
+.. _WordPress file header: https://codex.wordpress.org/File_Header
