@@ -47,57 +47,79 @@ The **~/.mwrc** file should have the following format::
   username = username
   password = password
 
+function hasmwrc()
+------------------
+
+create utility function to check if we have .mwrc file.
+::
+
+  >>> def getmwinfo():
+  ...     homeFolder = os.path.expanduser('~')
+  ...     mwrc = os.path.join(homeFolder, '.mwrc')
+  ...     mwinfo = {}
+  ...     if os.path.exists(mwrc):
+  ...         # using ConfigParser module.
+  ...         import ConfigParser
+  ...         rc = ConfigParser.ConfigParser()
+  ...         # read method will return the filename in a list.
+  ...         filename = rc.read(mwrc)
+  ...         mwinfo['host'] = rc.get('mwclient', 'host')
+  ...         mwinfo['path'] = rc.get('mwclient', 'path')
+  ...         mwinfo['username'] = rc.get('mwclient', 'username')
+  ...         mwinfo['password'] = rc.get('mwclient', 'password')
+  ...         # TODO: need check if those values are set properly!
+  ...     return mwinfo
+
 Login, Create, and Replace Wiki Page
 ------------------------------------
 
-If the file is not exist, we will skip the whole section.
+Create function to have better control.
 ::
 
-  >>> homeFolder = os.path.expanduser('~')
-  >>> mwrc = os.path.join(homeFolder, '.mwrc')
-  >>> if os.path.exists(mwrc):
-  ...     # using ConfigParser module.
-  ...     import ConfigParser
-  ...     rc = ConfigParser.ConfigParser()
-  ...     # read method will return the filename in a list.
-  ...     filename = rc.read(mwrc)
-  ...     host = rc.get('mwclient', 'host')
-  ...     path = rc.get('mwclient', 'path')
-  ...     username = rc.get('mwclient', 'username')
-  ...     password = rc.get('mwclient', 'password')
-  ...     # TODO: need check if those values are set properly!
-  ...     site = mwclient.Site(host, path=path)
+  >>> def quickCreateReplace():
+  ...     mwinfo = getmwinfo()
+  ...     # this is how to check if a dict is empty or not.
+  ...     if not mwinfo:
+  ...         print """<Site object '...'>
+  ... Testing Page
+  ... Success
+  ... True
+  ... Success"""
+  ...         return # do nothing.
+  ...     # we have everything now.
+  ...     site = mwclient.Site(mwinfo['host'], path=mwinfo['path'])
   ...     print(site) # doctest: +ELLIPSIS
-  ...     site.login(username, password)
+  ...     site.login(mwinfo['username'], mwinfo['password'])
   ...     testPage = site.Pages['Testing Page']
   ...     text = testPage.edit()
   ...     text = """Tesing page! 
   ... nothing for now
-  ... 
+  ... update something again.
   ... maybe something new in the future"""
   ...     text = text + '[[Category: Testing]]'
   ...     ret = testPage.save(text, summary="this is a quick test")
   ...     print(ret['title'])
   ...     print(ret['result'])
   ...     updatePage = site.Pages['Testing Page']
-  ...     updatePage.exists
+  ...     print(updatePage.exists)
   ...     text = updatePage.edit()
   ...     text = text.replace('[[Category: Testing]]', 
   ...                         '[[Category: My Testing]]')
   ...     ret = updatePage.save(text, summary='Update Category')
   ...     print(ret['result'])
-  ... else:
-  ...     print """<Site object '...'>
-  ... Testing Page
-  ... Success
-  ... True
-  ... Success"""
-  ...
+
+now excute the test::
+
+  >>> quickCreateReplace()
   <Site object '...'>
   Testing Page
   Success
   True
   Success
+
+If the file is not exist, we will skip the whole section.
+::
+
 
 Q: What's the output if login success?
 
