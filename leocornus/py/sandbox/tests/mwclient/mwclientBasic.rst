@@ -117,10 +117,6 @@ now excute the test::
   True
   Success
 
-If the file is not exist, we will skip the whole section.
-::
-
-
 Q: What's the output if login success?
 
 Q: Does the page create / update by mwclient_ trigger 
