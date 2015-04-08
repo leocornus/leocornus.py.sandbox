@@ -33,15 +33,15 @@ Here is an example of Wiki template::
 
 Here are the mapping.
 
-================ ============================================
-Wordpress Header Wiki Template Field
-================ ============================================
-Plugin Name      name
-Theme Name
-Plugin URI       internet_page
-Theme URI        This should be Wiki syntax with proper label
-Description      description
-Version          latest_version
-================ ============================================
+================== ============================================
+Wordpress Header   Wiki Template Field
+================== ============================================
+Plugin/Theme Name  name
+                   This will be also the page title.
+Plugin/Theme URI   internet_page
+                   This should be Wiki syntax with proper label
+Description        description
+Version            latest_version
+================== ============================================
 
 .. _WordPress file header: https://codex.wordpress.org/File_Header
