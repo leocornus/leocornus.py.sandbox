@@ -4,19 +4,44 @@ Extract WordPress File Header and Save as Wiki Page
 This story is about extract names and values from `WordPress file
 header`_ and save them as a MediaWiki page.
 
+Important Assumptions
+---------------------
 
+- The value for WordPress header field  will be all in one line.
 
-Header to Wiki Mapping
-----------------------
+Header to Wiki Template Mapping
+-------------------------------
 
-Version:
+We will use wiki template to save those file header fields.
+Here is a list of WordPress file headers we will extract the values:
 
-Name: 
+- Plugin/Theme Name
+- Plugin/Theme URI
+- Description
+- Version
 
-Author
+Here is an example of Wiki template::
 
-URI:
+  {{Feature Infobox
+  |name = BP Group Documents
+  |implementation = Document Management for BuddyPress Group, 
+  |type = WordPress Network Plugin
+  |description = BP Group Documents creates a page ...
+  |latest_version = 1.8
+  |internet_page = [http://wordpress.org/ Plugin Homepage]
+  |download = [https://downloads.wordpress.org/bpdoc.zip pbdoc.zip]
 
-Description:
+Here are the mapping.
+
+================ ============================================
+Wordpress Header Wiki Template Field
+================ ============================================
+Plugin Name      name
+Theme Name
+Plugin URI       internet_page
+Theme URI        This should be Wiki syntax with proper label
+Description      description
+Version          latest_version
+================ ============================================
 
 .. _WordPress file header: https://codex.wordpress.org/File_Header
