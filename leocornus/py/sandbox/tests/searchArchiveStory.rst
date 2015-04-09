@@ -102,7 +102,10 @@ Return a dict with the following fields:
 :fileName: the file name, without path.
 :dirName: the full path of the directory.
 :folderName: the name of the directory without path.
+:packageName: the name of the package, plugin name or theme name
+:packageURI: the url to this package.
 :version: Version from the file.
+:description: the brief description in one line.
 :archiveName: the full path to the archive file.
 
 Here are the function::
@@ -114,6 +117,7 @@ Here are the function::
   ...     #print """Dir Name: %s""" % dirName 
   ...     folderName = os.path.basename(dirName)
   ...     #print """Folder Name: %s""" % folderName
+  ...     # ========
   ...     # extract the version number from the plugin file.
   ...     # try to using sed or grep
   ...     grepPattern = "grep -oE 'Version: .*' " + fullFilePath
@@ -121,10 +125,17 @@ Here are the function::
   ...     version = version.strip().split(":")
   ...     version = version[1].strip()
   ...     #print """Version: %s""" % version
+  ...     # ========
+  ...     # extract the package name, plugin name or theme name.
+  ...     pattern = "grep -oE '(Plugin|Theme) Name: .*' " + fullFilePath
+  ...     name = subprocess.check_output(pattern, shell=True)
+  ...     name = name.strip().split(":")
+  ...     name = name[1].strip()
   ...     # get ready the archive name.
   ...     archiveName = """%s.%s.zip""" % (folderName, version)
   ...     #print """Archive Name: %s""" % archiveName
   ...     info = {
+  ...       'packageName' : name,
   ...       'fileName' : fileName,
   ...       'dirName' : dirName,
   ...       'folderName' : folderName,
@@ -259,6 +270,7 @@ Go through each plugin::
   ...     # the plugin already has full path, as we grep the 
   ...     # full path pattern.
   ...     info = extractInfo(plugin)
+  ...     print("""Package Name: %s""" % info['packageName'])
   ...     print("""File Name: %s""" % info['fileName'])
   ...     print("""Plugin Dir: %s""" % info['dirName']) # doctest: +ELLIPSIS
   ...     print("""Plugin Name: %s""" % info['folderName'])
@@ -278,6 +290,7 @@ Go through each plugin::
   ...     'pluginone/pfile2.php' in files
   ...     'pluginone/pfile3.php' in files
   ...     'pluginone/css/styles.css' in files
+  Package Name: Plugin One
   File Name: pfileone.php
   Plugin Dir: /.../pluginone
   Plugin Name: pluginone
@@ -298,6 +311,7 @@ Go through each theme::
 
   >>> for theme in themes.strip().splitlines():
   ...     info = extractInfo(theme)
+  ...     print("""Package Name: %s""" % info['packageName'])
   ...     print("""File Name: %s""" % info['fileName'])
   ...     print("""Theme Dir: %s""" % info['dirName']) # doctest: +ELLIPSIS
   ...     print("""Theme Name: %s""" % info['folderName'])
@@ -316,6 +330,7 @@ Go through each theme::
   ...     'themeone/tfileone.php' in files
   ...     'themeone/tfiletwo.php' in files
   ...     'themeone/image/imgone.jpg' in files
+  Package Name: theme one
   File Name: style.css
   Theme Dir: /.../themeone
   Theme Name: themeone
