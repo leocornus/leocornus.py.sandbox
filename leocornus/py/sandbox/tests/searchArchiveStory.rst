@@ -126,11 +126,17 @@ Here are the function::
   ...     # extract the package name, plugin name or theme name.
   ...     name = extractHeader('(Plugin|Theme) Name: .*', 
   ...                          fullFilePath)
+  ...     description = extractHeader('Description: .*',
+  ...                                 fullFilePath)
+  ...     uri = extractHeader('(Plugin|Theme) URI: .*',
+  ...                         fullFilePath)
   ...     # get ready the archive name.
   ...     archiveName = """%s.%s.zip""" % (folderName, version)
   ...     #print """Archive Name: %s""" % archiveName
   ...     info = {
   ...       'packageName' : name,
+  ...       'packageURI' : uri,
+  ...       'description' : description,
   ...       'fileName' : fileName,
   ...       'dirName' : dirName,
   ...       'folderName' : folderName,
@@ -155,9 +161,13 @@ Return the value of the header field.
   >>> def extractHeader(pattern, fullFilePath):
   ...     # get ready the grep pattern.
   ...     grepPattern = """grep -oE '%s' %s""" % (pattern, fullFilePath)
-  ...     value = subprocess.check_output(grepPattern, shell=True)
-  ...     value = value.strip().split(":")
-  ...     return value[1].strip()
+  ...     try:
+  ...         value = subprocess.check_output(grepPattern, shell=True)
+  ...         # only split the first one.
+  ...         value = value.strip().split(":", 1)
+  ...         return value[1].strip()
+  ...     except subprocess.CalledProcessError:
+  ...         value = ''
 
 Preparing Testing Files
 -----------------------
@@ -186,6 +196,8 @@ Here we will get ready some files for testing::
   >>> os.mkdir(pluginOne)
   >>> data = """/**
   ...  * Plugin Name: Plugin One
+  ...  * Plugin URI: http://www.plugin.com
+  ...  * Description: plugin description.
   ...  * Version:  1.0.1
   ...  */
   ...  # *comments**
@@ -231,6 +243,7 @@ Create the theme style.css, which tells this is a WordPress theme::
   >>> data = """/**
   ...  * Theme Name: theme one
   ...  * Theme URI: http://www.themeone.com
+  ...  * Description: theme description.
   ...  * Version: 2.3
   ...  */
   ... some other infomation **"""
@@ -286,6 +299,7 @@ Go through each plugin::
   ...     # full path pattern.
   ...     info = extractInfo(plugin)
   ...     print("""Package Name: %s""" % info['packageName'])
+  ...     print("""Package URI: %s""" % info['packageURI'])
   ...     print("""File Name: %s""" % info['fileName'])
   ...     print("""Plugin Dir: %s""" % info['dirName']) # doctest: +ELLIPSIS
   ...     print("""Plugin Name: %s""" % info['folderName'])
@@ -306,6 +320,7 @@ Go through each plugin::
   ...     'pluginone/pfile3.php' in files
   ...     'pluginone/css/styles.css' in files
   Package Name: Plugin One
+  Package URI: http://www.plugin.com
   File Name: pfileone.php
   Plugin Dir: /.../pluginone
   Plugin Name: pluginone
