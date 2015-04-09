@@ -120,17 +120,12 @@ Here are the function::
   ...     # ========
   ...     # extract the version number from the plugin file.
   ...     # try to using sed or grep
-  ...     grepPattern = "grep -oE 'Version: .*' " + fullFilePath
-  ...     version = subprocess.check_output(grepPattern, shell=True)
-  ...     version = version.strip().split(":")
-  ...     version = version[1].strip()
+  ...     version = extractHeader('Version: .*', fullFilePath)
   ...     #print """Version: %s""" % version
   ...     # ========
   ...     # extract the package name, plugin name or theme name.
-  ...     pattern = "grep -oE '(Plugin|Theme) Name: .*' " + fullFilePath
-  ...     name = subprocess.check_output(pattern, shell=True)
-  ...     name = name.strip().split(":")
-  ...     name = name[1].strip()
+  ...     name = extractHeader('(Plugin|Theme) Name: .*', 
+  ...                          fullFilePath)
   ...     # get ready the archive name.
   ...     archiveName = """%s.%s.zip""" % (folderName, version)
   ...     #print """Archive Name: %s""" % archiveName
@@ -143,6 +138,26 @@ Here are the function::
   ...       'archiveName' : archiveName,
   ...     }
   ...     return info
+
+extractHeader
+~~~~~~~~~~~~~
+
+utility function to extract header field from a file.
+
+Params:
+
+:pattern: the grep pattern for the header field.
+:fullFilePath: the full path to a file.
+
+Return the value of the header field.
+::
+
+  >>> def extractHeader(pattern, fullFilePath):
+  ...     # get ready the grep pattern.
+  ...     grepPattern = """grep -oE '%s' %s""" % (pattern, fullFilePath)
+  ...     value = subprocess.check_output(grepPattern, shell=True)
+  ...     value = value.strip().split(":")
+  ...     return value[1].strip()
 
 Preparing Testing Files
 -----------------------
