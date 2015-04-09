@@ -120,15 +120,15 @@ Here are the function::
   ...     # ========
   ...     # extract the version number from the plugin file.
   ...     # try to using sed or grep
-  ...     version = extractHeader('Version: .*', fullFilePath)
+  ...     version = extractHeader('Version:.*', fullFilePath)
   ...     #print """Version: %s""" % version
   ...     # ========
   ...     # extract the package name, plugin name or theme name.
-  ...     name = extractHeader('(Plugin|Theme) Name: .*', 
+  ...     name = extractHeader('(Plugin|Theme) Name:.*', 
   ...                          fullFilePath)
-  ...     description = extractHeader('Description: .*',
+  ...     description = extractHeader('Description:.*',
   ...                                 fullFilePath)
-  ...     uri = extractHeader('(Plugin|Theme) URI: .*',
+  ...     uri = extractHeader('(Plugin|Theme) URI:.*',
   ...                         fullFilePath)
   ...     # get ready the archive name.
   ...     archiveName = """%s.%s.zip""" % (folderName, version)
