@@ -7,7 +7,7 @@
 
 import subprocess
 
-def extract_wp_header(filepath, default={}):
+def extract_wp_header(filepath, **default):
     """extract WordPress file header fields values in a dict.
 
     filepath should be the full path to the file.

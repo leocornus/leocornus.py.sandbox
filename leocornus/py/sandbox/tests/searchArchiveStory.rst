@@ -123,7 +123,8 @@ Here are the function::
   ...     #print """Dir Name: %s""" % dirName 
   ...     folderName = os.path.basename(dirName)
   ...     #print """Folder Name: %s""" % folderName
-  ...     header = extract_wp_header(fullFilePath, {'Version':'0.1'})
+  ...     header = extract_wp_header(filepath=fullFilePath, 
+  ...                                Version='0.1')
   ...     version = header['Version']
   ...     name = header['(Plugin|Theme) Name']
   ...     description = header['Description']
