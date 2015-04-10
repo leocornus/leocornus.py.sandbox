@@ -93,6 +93,12 @@ extractInfo
 utility function to extract a set of information from 
 the given file full path.
 
+Try to use the basic utility functions module::
+
+  >>> from leocornus.py.sandbox.utils_basic import extract_wp_header
+  >>> print(extract_wp_header)
+  <function extract_wp_header at ...>
+
 Parameters:
 
 :fullFilePath: the full path to the file.
@@ -117,19 +123,11 @@ Here are the function::
   ...     #print """Dir Name: %s""" % dirName 
   ...     folderName = os.path.basename(dirName)
   ...     #print """Folder Name: %s""" % folderName
-  ...     # ========
-  ...     # extract the version number from the plugin file.
-  ...     # try to using sed or grep
-  ...     version = extractHeader('Version:.*', fullFilePath)
-  ...     #print """Version: %s""" % version
-  ...     # ========
-  ...     # extract the package name, plugin name or theme name.
-  ...     name = extractHeader('(Plugin|Theme) Name:.*', 
-  ...                          fullFilePath)
-  ...     description = extractHeader('Description:.*',
-  ...                                 fullFilePath)
-  ...     uri = extractHeader('(Plugin|Theme) URI:.*',
-  ...                         fullFilePath)
+  ...     header = extract_wp_header(fullFilePath, {'Version':'0.1'})
+  ...     version = header['Version']
+  ...     name = header['(Plugin|Theme) Name']
+  ...     description = header['Description']
+  ...     uri = header['(Plugin|Theme) URI']
   ...     # get ready the archive name.
   ...     archiveName = """%s.%s.zip""" % (folderName, version)
   ...     #print """Archive Name: %s""" % archiveName
@@ -164,7 +162,7 @@ Return the value of the header field.
   ...     try:
   ...         value = subprocess.check_output(grepPattern, shell=True)
   ...         # only split the first one.
-  ...         value = value.strip().split(":", 1)
+  ...         value = value.strip().split(b":", 1)
   ...         return value[1].strip()
   ...     except subprocess.CalledProcessError:
   ...         value = ''
