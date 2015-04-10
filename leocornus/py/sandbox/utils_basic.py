@@ -5,6 +5,13 @@
 # we will follow the Python code style guide,
 # function name should be all lowercase letter with underscore.
 
+# doctest only works for docstring, it will not work here.
+# the following test will not be tested.
+#
+# >>> print(2 * 6)
+# 12
+#
+
 import subprocess
 
 def extract_wp_header(filepath, **default):
@@ -20,6 +27,13 @@ def extract_wp_header(filepath, **default):
     - Version
     - Author
     - Author URI
+    """
+    """
+    test the doc test in a py file.
+
+    >>> print(1 + 2)
+    3 
+
     """
 
     # preparing the patterns.

@@ -47,11 +47,13 @@ def test_suite():
     pkgFolder = dirname(testsFolder)
 
     # walk through the current folder, the tests folder.
-    for dirpath, dirnames, filenames in walk(testsFolder):
+    for dirpath, dirnames, filenames in walk(pkgFolder):
         for name in filenames:
-            if name.endswith('.rst'):
+            # only adding .rst files?
+            if name.endswith('.rst') or name.endswith('.py'):
                 path = normpath(join(dirpath, name))
-                # get the relative path to package folder.
+                # get the relative path to the package folder,
+                # and remove the begining /
                 relpath = path.split(pkgFolder)[1][1:]
                 # add to test suite.
                 suite.addTest(
