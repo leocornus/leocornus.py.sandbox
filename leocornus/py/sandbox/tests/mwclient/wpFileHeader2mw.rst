@@ -18,6 +18,7 @@ All temporary testing files will be stored here.
   >>> from leocornus.py.sandbox.utils_basic import create_file
   >>> from leocornus.py.sandbox.utils_basic import extract_wp_header
   >>> from leocornus.py.sandbox.utils_mwclient import mw_create_page
+  >>> from leocornus.py.sandbox.utils_mwclient import mw_page_exists
 
   >>> homeFolder = os.path.expanduser('~')
   >>> testFolder = os.path.join(homeFolder, 'testmw')
@@ -155,8 +156,9 @@ Preparing the page content::
   ...   base = 'http://10.1.1.1/repo',
   ...   name = """pluginone.%s""" % headers['Version']
   ... )
+  >>> pageTitle = headers['(Plugin|Theme) Name']
   >>> pageContent = pageTemplate % dict(
-  ...   name = headers['(Plugin|Theme) Name'],
+  ...   name = pageTitle,
   ...   description = headers['Description'],
   ...   version = headers['Version'],
   ...   homepage = homepage,
@@ -167,10 +169,8 @@ Save page content to wiki page.
 By default we will skip these tests as it depends on a
 live MediaWiki site::
 
-  >>> ret = mw_create_page(headers['(Plugin|Theme) Name'], 
-  ...                      pageContent) # doctest: +SKIP
-  >>> print(ret) # doctest: +SKIP
-  None
+  >>> if not mw_page_exists(pageTitle):
+  ...     ret = mw_create_page(pageTitle, pageContent)
 
 Update flow
 ~~~~~~~~~~~

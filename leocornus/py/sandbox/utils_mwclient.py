@@ -37,7 +37,7 @@ __email__ = "sean.chen@leocorn.com"
 
 # the following functions are rewrite from mwclientBasic.rst
 
-def mw_get_login(mwrc=None):
+def mw_get_site(mwrc=None):
     """Get MediaWiki site's login info from the given mwrc file.
     The default is ~/.mwrc, if none is specified.
 
@@ -51,9 +51,9 @@ def mw_get_login(mwrc=None):
     """
     Here is a quick test:
 
-    >>> from leocornus.py.sandbox.utils_mwclient import mw_get_login 
-    >>> print(mw_get_login)
-    <function mw_get_login at ...>
+    >>> from leocornus.py.sandbox.utils_mwclient import mw_get_site
+    >>> print(mw_get_site)
+    <function mw_get_site at ...>
 
     """
 
@@ -63,33 +63,46 @@ def mw_get_login(mwrc=None):
         home_folder = os.path.expanduser('~')
         mwrc = os.path.join(home_folder, '.mwrc')
     # set the empty dict.
-    mwinfo = {}
+    site = None
 
     if os.path.exists(mwrc):
         rc = configparser.ConfigParser()
         # the config parser read method will return the filename
         # in a list.
         filename = rc.read(mwrc)
+        mwinfo = {}
         mwinfo['host'] = rc.get('mwclient', 'host')
         mwinfo['path'] = rc.get('mwclient', 'path')
         mwinfo['username'] = rc.get('mwclient', 'username')
         mwinfo['password'] = rc.get('mwclient', 'password')
         # TODO: need check if those values are set properly!
+        site = mwclient.Site(mwinfo['host'], path=mwinfo['path'])
+        site.login(mwinfo['username'], mwinfo['password'])
 
-    return mwinfo
+    return site 
 
 # create a wiki page.
 def mw_create_page(title, content):
     """Create a MediaWiki page with the given title and content.
     """
 
-    mwinfo = mw_get_login()
-    if not mwinfo:
-        return None
-
-    site = mwclient.Site(mwinfo['host'], path=mwinfo['path'])
-    site.login(mwinfo['username'], mwinfo['password'])
-    thepage = site.Pages[title]
-    ret = thepage.save(content, summary="quick test")
+    site = mw_get_site()
+    if site == None:
+        ret = None
+    else:
+        thepage = site.Pages[title]
+        ret = thepage.save(content, summary="quick test")
 
     return ret
+
+# check if wiki page exists.
+def mw_page_exists(title):
+    """Return true if a wiki page with the same title exists.
+    """
+
+    site = mw_get_site()
+    if site == None:
+        return False
+    else:
+        thepage = site.Pages[title]
+        return thepage.exists
