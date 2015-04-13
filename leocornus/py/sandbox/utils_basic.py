@@ -12,7 +12,51 @@
 # 12
 #
 
+import os
 import subprocess
+import shutil
+
+# utility function to create files for testing...
+
+def create_file(folder, filename, content):
+    """Create file with the give name in the given folder.
+
+    If the folder is not exist, we will create it.
+    """
+    """
+    The is quick test::
+
+    >>> import os
+    >>> import shutil
+    >>> from leocornus.py.sandbox.utils_basic import create_file
+
+    >>> homefolder = os.path.expanduser("~")
+    >>> testFolder = os.path.join(homefolder, 'test123')
+    >>> os.path.exists(testFolder)
+    False
+    >>> os.path.isdir(testFolder)
+    False
+    >>> create_file(testFolder, 'one.txt', 'hello file!')
+    >>> os.path.isdir(testFolder)
+    True
+
+    need some clean up here.
+
+    >>> shutil.rmtree(testFolder)
+    >>> os.path.exists(testFolder)
+    False
+
+    """
+
+    if(not os.path.exists(folder)):
+        # try to create this folder.
+        os.mkdir(folder)
+
+    fullName = os.path.join(folder, filename)
+    os.system("touch " + fullName)
+    f = open(fullName, 'r+')
+    f.write(content)
+    f.close()
 
 def extract_wp_header(filepath, **default):
     """extract WordPress file header fields values in a dict.
