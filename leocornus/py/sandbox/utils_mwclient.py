@@ -23,6 +23,7 @@ This will be module __doc__
 """
 
 import os
+import mwclient
 
 # Python version 3.0 using all lowercase module name.
 try:
@@ -56,7 +57,7 @@ def mw_get_login(mwrc=None):
 
     """
 
-    if(merc == None):
+    if(mwrc == None):
         # try to get the mw login info from default location:
         # ~/.mwrc 
         home_folder = os.path.expanduser('~')
@@ -78,6 +79,17 @@ def mw_get_login(mwrc=None):
     return mwinfo
 
 # create a wiki page.
-def mw_create_page(title, content, categories):
-    """Create a MediaWiki page.
+def mw_create_page(title, content):
+    """Create a MediaWiki page with the given title and content.
     """
+
+    mwinfo = mw_get_login()
+    if not mwinfo:
+        return None
+
+    site = mwclient.Site(mwinfo['host'], path=mwinfo['path'])
+    site.login(mwinfo['username'], mwinfo['password'])
+    thepage = site.Pages[title]
+    ret = thepage.save(content, summary="quick test")
+
+    return ret

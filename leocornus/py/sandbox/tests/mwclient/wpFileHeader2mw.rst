@@ -16,6 +16,8 @@ All temporary testing files will be stored here.
 
   >>> import os
   >>> from leocornus.py.sandbox.utils_basic import create_file
+  >>> from leocornus.py.sandbox.utils_basic import extract_wp_header
+  >>> from leocornus.py.sandbox.utils_mwclient import mw_create_page
 
   >>> homeFolder = os.path.expanduser('~')
   >>> testFolder = os.path.join(homeFolder, 'testmw')
@@ -76,6 +78,17 @@ Here is an example of Wiki template::
   |download = [https://some.wordpress.org/bpdoc.zip pbdoc.zip]}}
   [[Category:Feature]]
 
+Get ready the data template for the new wiki page.
+This is the minimium request for new page.::
+
+  >>> pageTemplate = """{{Feature Infobox
+  ... |name=%(name)s
+  ... |internet_page=%(homepage)s
+  ... |description=%(description)s
+  ... |latest_version=%(version)s
+  ... |download=%(download)s}}
+  ... """
+
 Here are the mapping.
 
 ================== ============================================
@@ -115,6 +128,8 @@ this is creation or update scenario.
 Creation flow
 ~~~~~~~~~~~~~
 
+Here is the checklist for creation.
+
 - assume page is not exist.
 - create new page using package (plugin or theme) name as title.
 - ability to set the template name.
@@ -122,6 +137,40 @@ Creation flow
 - ability to set the default values for any template field.
 - ability to set the categories.
 - save page and logging the result.
+
+Extract WordPress file headers::
+
+  >>> pluginfile = os.path.join(pluginFolder, 'one.php')
+  >>> headers = extract_wp_header(pluginfile)
+  >>> print(headers['Version'])
+  1.0.1
+  >>> print(headers['(Plugin|Theme) Name'])
+  Plugin One
+
+Preparing the page content::
+
+  >>> homepage = """[%s %s]""" % (headers['(Plugin|Theme) URI'],
+  ...                             'Plugin Homepage')
+  >>> download = """[%(base)s/%(name)s.zip %(name)s.zip]""" % dict(
+  ...   base = 'http://10.1.1.1/repo',
+  ...   name = """pluginone.%s""" % headers['Version']
+  ... )
+  >>> pageContent = pageTemplate % dict(
+  ...   name = headers['(Plugin|Theme) Name'],
+  ...   description = headers['Description'],
+  ...   version = headers['Version'],
+  ...   homepage = homepage,
+  ...   download = download
+  ... )
+
+Save page content to wiki page.
+By default we will skip these tests as it depends on a
+live MediaWiki site::
+
+  >>> ret = mw_create_page(headers['(Plugin|Theme) Name'], 
+  ...                      pageContent) # doctest: +SKIP
+  >>> print(ret) # doctest: +SKIP
+  None
 
 Update flow
 ~~~~~~~~~~~
