@@ -36,8 +36,9 @@ __email__ = "sean.chen@leocorn.com"
 
 # the following functions are rewrite from mwclientBasic.rst
 
-def mw_get_login():
-    """Get MediaWiki site's login info from ~/.mwrc file.
+def mw_get_login(mwrc=None):
+    """Get MediaWiki site's login info from the given mwrc file.
+    The default is ~/.mwrc, if none is specified.
 
     This function will return a dict objet with the following keys:
 
@@ -55,8 +56,11 @@ def mw_get_login():
 
     """
 
-    home_folder = os.path.expanduser('~')
-    mwrc = os.path.join(home_folder, '.mwrc')
+    if(merc == None):
+        # try to get the mw login info from default location:
+        # ~/.mwrc 
+        home_folder = os.path.expanduser('~')
+        mwrc = os.path.join(home_folder, '.mwrc')
     # set the empty dict.
     mwinfo = {}
 
@@ -72,3 +76,8 @@ def mw_get_login():
         # TODO: need check if those values are set properly!
 
     return mwinfo
+
+# create a wiki page.
+def mw_create_page(title, content, categories):
+    """Create a MediaWiki page.
+    """
