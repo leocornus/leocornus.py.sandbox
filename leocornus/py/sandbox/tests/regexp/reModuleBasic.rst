@@ -49,15 +49,15 @@ Testing this lines of strings::
 try to replace new line with empty string::
 
   >>> p = re.compile('\\n')
-  >>> oneline = p.sub('', source)
-  >>> print(oneline)
+  >>> onelinesrc = p.sub('', source)
+  >>> print(onelinesrc)
   {{Feature Infobox|name=Plugin One...}}other content.
 
 get the template source in one line.
 ::
 
   >>> p = re.compile('{{(.*)}}')
-  >>> temps = p.findall(oneline)
+  >>> temps = p.findall(onelinesrc)
   >>> print(temps)
   ['Feature Infobox|name=Plu...zip]']
   >>> oneline = temps[0]
@@ -90,3 +90,14 @@ Try some simple search and replace::
   Feature Infobox
   |name=Plugin One New!
   ...
+
+replace new line with empty string::
+
+  >>> p = re.compile('\\n')
+  >>> replaced = p.sub('', lines);
+
+replace oneline with replaced::
+
+  >>> onelinesrc = onelinesrc.replace(oneline, replaced)
+  >>> print(onelinesrc)
+  {{Feature Infobox|name=Plugin One New!...}}other content.

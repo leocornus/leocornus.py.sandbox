@@ -180,6 +180,22 @@ Update flow
 - replace content with new value according to the mapping
 - save page and logging the result.
 
+::
+
+  >>> if mw_page_exists(pageTitle):
+  ...    ret = mw_replace_page(pageTitle, headers)
+
+Replace strategy:
+
+- replace all new lines (**re.compile('\\n')**) with empty string.
+- get template source.
+- replace **\|** with **\n|**, this will be the standard 
+  format for a wiki template.
+- for each new, we perform find the exact value and replace.
+- replace new line with empty string for the replaced string.
+- replace the template source with the replaced string for the 
+  whole page content from first step.
+
 Clean up after testing
 ----------------------
 
