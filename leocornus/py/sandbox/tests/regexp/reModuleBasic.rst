@@ -46,12 +46,15 @@ Testing this lines of strings::
   ... other content.
   ... """
 
-try to replace new line with empty string::
+try to replace new line with empty string, 
+only for the template content
+::
 
-  >>> p = re.compile('\\n')
-  >>> onelinesrc = p.sub('', source)
+  >>> p = re.compile('\\n\|')
+  >>> onelinesrc = p.sub('|', source)
   >>> print(onelinesrc)
-  {{Feature Infobox|name=Plugin One...}}other content.
+  {{Feature Infobox|name=Plugin One...}}
+  other content.
 
 get the template source in one line.
 ::
@@ -100,4 +103,5 @@ replace oneline with replaced::
 
   >>> onelinesrc = onelinesrc.replace(oneline, replaced)
   >>> print(onelinesrc)
-  {{Feature Infobox|name=Plugin One New!...}}other content.
+  {{Feature Infobox|name=Plugin One New!...}}
+  other content.
