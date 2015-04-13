@@ -161,3 +161,15 @@ Check a string ends with something::
   >>> aName = 'someting.ends'
   >>> aName.endswith('.ends')
   True
+
+Format printing test::
+
+  >>> formatStr = """Try to print %s
+  ... using a pre define
+  ... simple template %s
+  ... One more here %s."""
+  >>> print(formatStr % ('one', 'two', 'three'))
+  Try to print one
+  using a pre define
+  simple template two
+  One more here three.
