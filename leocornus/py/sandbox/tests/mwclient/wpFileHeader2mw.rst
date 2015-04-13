@@ -7,6 +7,24 @@ header`_ and save them as a MediaWiki page.
 .. contents:: table of contents
    :depth: 5
 
+Set up testing
+--------------
+
+Create the testing folder.
+All temporary testing files will be stored here.
+::
+
+  >>> import os
+  >>> from leocornus.py.sandbox.utils_basic import create_file
+
+  >>> homeFolder = os.path.expanduser('~')
+  >>> testFolder = os.path.join(homeFolder, 'testmw')
+  >>> os.path.exists(testFolder)
+  False
+  >>> create_file(testFolder, 'readme.txt', '')
+  >>> os.path.exists(testFolder)
+  True
+
 Important Assumptions
 ---------------------
 
@@ -22,6 +40,29 @@ Here is a list of WordPress file headers we will extract the values:
 - Plugin/Theme URI
 - Description
 - Version
+
+Create a WordPress file headers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Create a dummy WordPress plugin for testing purpose.
+Here is the content of the plugin file::
+
+  >>> data = """/**
+  ...  * Plugin Name: Plugin One
+  ...  * Plugin URI: http://www.plugin.com
+  ...  * Description: plugin description.
+  ...  * Version:  1.0.1
+  ...  */
+  ...  # *comments**
+  ... <?php
+  ... phpinfo()"""
+
+We will create this file in a plugin folder::
+
+  >>> pluginFolder = os.path.join(testFolder, 'pluginone')
+  >>> create_file(pluginFolder, 'one.php', data)
+
+Here is a theme file header.
 
 Here is an example of Wiki template::
 
@@ -89,5 +130,17 @@ Update flow
 - access page in edit mode.
 - replace content with new value according to the mapping
 - save page and logging the result.
+
+Clean up after testing
+----------------------
+
+Simply remove the whole test folder to clean up.
+::
+
+  >>> import shutil
+  >>> if(os.path.exists(testFolder)):
+  ...     shutil.rmtree(testFolder)
+  >>> os.path.exists(testFolder)
+  False
 
 .. _WordPress file header: https://codex.wordpress.org/File_Header
