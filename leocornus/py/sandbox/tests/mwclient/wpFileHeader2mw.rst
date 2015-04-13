@@ -18,6 +18,7 @@ All temporary testing files will be stored here.
   >>> from leocornus.py.sandbox.utils_basic import create_file
   >>> from leocornus.py.sandbox.utils_basic import extract_wp_header
   >>> from leocornus.py.sandbox.utils_mwclient import mw_create_page
+  >>> from leocornus.py.sandbox.utils_mwclient import mw_replace_page
   >>> from leocornus.py.sandbox.utils_mwclient import mw_page_exists
 
   >>> homeFolder = os.path.expanduser('~')
@@ -54,7 +55,7 @@ Here is the content of the plugin file::
   ...  * Plugin Name: Plugin One
   ...  * Plugin URI: http://www.plugin.com
   ...  * Description: plugin description.
-  ...  * Version:  1.0.1
+  ...  * Version:  1.0.2
   ...  */
   ...  # *comments**
   ... <?php
@@ -84,9 +85,9 @@ This is the minimium request for new page.::
 
   >>> pageTemplate = """{{Feature Infobox
   ... |name=%(name)s
-  ... |internet_page=%(homepage)s
+  ... |internet_page=%(internet_page)s
   ... |description=%(description)s
-  ... |latest_version=%(version)s
+  ... |latest_version=%(latest_version)s
   ... |download=%(download)s}}
   ... """
 
@@ -144,7 +145,7 @@ Extract WordPress file headers::
   >>> pluginfile = os.path.join(pluginFolder, 'one.php')
   >>> headers = extract_wp_header(pluginfile)
   >>> print(headers['Version'])
-  1.0.1
+  1.0.2
   >>> print(headers['(Plugin|Theme) Name'])
   Plugin One
 
@@ -157,13 +158,16 @@ Preparing the page content::
   ...   name = """pluginone.%s""" % headers['Version']
   ... )
   >>> pageTitle = headers['(Plugin|Theme) Name']
-  >>> pageContent = pageTemplate % dict(
+  >>> print(pageTitle)
+  Plugin One
+  >>> values = dict(
   ...   name = pageTitle,
   ...   description = headers['Description'],
-  ...   version = headers['Version'],
-  ...   homepage = homepage,
+  ...   latest_version = headers['Version'],
+  ...   internet_page = homepage,
   ...   download = download
   ... )
+  >>> pageContent = pageTemplate % values
 
 Save page content to wiki page.
 By default we will skip these tests as it depends on a
@@ -183,7 +187,7 @@ Update flow
 ::
 
   >>> if mw_page_exists(pageTitle):
-  ...    ret = mw_replace_page(pageTitle, headers)
+  ...    ret = mw_replace_page(pageTitle, values)
 
 Replace strategy:
 

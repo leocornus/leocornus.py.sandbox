@@ -23,6 +23,7 @@ This will be module __doc__
 """
 
 import os
+import re
 import mwclient
 
 # Python version 3.0 using all lowercase module name.
@@ -106,3 +107,36 @@ def mw_page_exists(title):
     else:
         thepage = site.Pages[title]
         return thepage.exists
+
+# replace a page with new template values.
+def mw_replace_page(title, values={}):
+    """Replace the page with new values.
+    """
+
+    site = mw_get_site()
+    if site == None:
+        return None
+    else:
+        thepage = site.Pages[title]
+        content = thepage.edit()
+        # replace new line with empty string.
+        p = re.compile('\\n\|')
+        onelineContent = p.sub('|', content)
+        # get the template source in one line.
+        p = re.compile('{{(.*)}}')
+        temps = p.findall(onelineContent)
+        oneline = temps[0]
+        # replace | to \n as the standard template format.
+        p = re.compile('\|')
+        lines = p.sub('\\n|', oneline)
+        # now for each new value to replace.
+        for key, value in values.items():
+            p = re.compile("""%s=.*""" % key)
+            lines = p.sub("""%s=%s""" % (key, value), lines)
+        # make the replaced content in one line too
+        p = re.compile('\\n')
+        replaced = p.sub('', lines);
+        onelineContent = onelineContent.replace(oneline, replaced)
+        ret = thepage.save(onelineContent, 'Replace now')
+        return ret
+
