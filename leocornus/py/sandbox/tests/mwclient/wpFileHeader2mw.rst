@@ -69,6 +69,25 @@ How to determine?
 As we agreed, the name (Plugin Name or Theme Name) will be the 
 wiki page title.
 So the page is exist or not will be the condition to determine
-this is creattion or update scenario.
+this is creation or update scenario.
+
+Creation flow
+~~~~~~~~~~~~~
+
+- assume page is not exist.
+- create new page using package (plugin or theme) name as title.
+- ability to set the template name.
+- fill out the template according to the mappings.
+- ability to set the default values for any template field.
+- ability to set the categories.
+- save page and logging the result.
+
+Update flow
+~~~~~~~~~~~
+
+- assume page is exist.
+- access page in edit mode.
+- replace content with new value according to the mapping
+- save page and logging the result.
 
 .. _WordPress file header: https://codex.wordpress.org/File_Header
