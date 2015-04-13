@@ -173,3 +173,21 @@ Format printing test::
   using a pre define
   simple template two
   One more here three.
+
+Here is another way for the format printing::
+
+  >>> formatStr = """Try to print %(one)s
+  ... using a pre define
+  ... use '%(one)s' again here
+  ... simple template %(two)s
+  ... One more here %(three)s."""
+  >>> print(formatStr % dict(
+  ...   one = "one one",
+  ...   two = "two two",
+  ...   three = "three three"
+  ... ))
+  Try to print one one
+  using a pre define
+  use 'one one' again here
+  simple template two two
+  One more here three three.
