@@ -110,3 +110,25 @@ def extract_wp_header(filepath, **default):
                 ret[field_name] = ""
 
     return ret
+
+def transfer_wp_header(headers, pkg_name, base_url):
+    """transfer the WordPress headers to what we need.
+    """
+
+    homepage = """[%s %s]""" % (headers['(Plugin|Theme) URI'],
+                                'Plugin Homepage')
+    download = """[%(base)s/%(name)s.zip %(name)s.zip]""" % dict(
+      base = base_url,
+      name = """%s.%s""" % (pkg_name, headers['Version'])
+    )
+    pageTitle = headers['(Plugin|Theme) Name']
+
+    values = dict(
+      name = pageTitle,
+      description = headers['Description'],
+      latest_version = headers['Version'],
+      internet_page = homepage,
+      download = download
+    )
+
+    return values
