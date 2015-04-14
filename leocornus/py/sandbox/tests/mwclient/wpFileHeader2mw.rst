@@ -17,6 +17,7 @@ All temporary testing files will be stored here.
   >>> import os
   >>> from leocornus.py.sandbox.utils_basic import create_file
   >>> from leocornus.py.sandbox.utils_basic import extract_wp_header
+  >>> from leocornus.py.sandbox.utils_basic import transfer_wp_header 
   >>> from leocornus.py.sandbox.utils_mwclient import mw_create_page
   >>> from leocornus.py.sandbox.utils_mwclient import mw_replace_page
   >>> from leocornus.py.sandbox.utils_mwclient import mw_page_exists
@@ -199,6 +200,59 @@ Replace strategy:
 - replace new line with empty string for the replaced string.
 - replace the template source with the replaced string for the 
   whole page content from first step.
+
+Testing the class
+-----------------
+
+import the class::
+
+  >>> from leocornus.py.sandbox.utils_mwclient import MwrcSite
+
+Preparing anothe plugin for testing::
+
+  >>> data = """/**
+  ...  * Plugin Name: Plugin Two
+  ...  * Plugin URI: http://www.plugin.com
+  ...  * Description: plugin description.
+  ...  * Version:  2.0.2
+  ...  */
+  ...  # *comments**
+  ... <?php
+  ... phpinfo()"""
+  >>> pluginTwo = os.path.join(testFolder, 'plugintwo')
+  >>> create_file(pluginTwo, 'two.php', data)
+
+Extract the WordPress Headers::
+
+  >>> pluginfile = os.path.join(pluginTwo, 'two.php')
+  >>> headers = extract_wp_header(pluginfile)
+  >>> print(headers['Version'])
+  2.0.2
+  >>> print(headers['(Plugin|Theme) Name'])
+  Plugin Two
+
+Get ready the page content by fill in the template::
+
+  >>> values = transfer_wp_header(headers, 'plugintwo',
+  ...                    'http://10.0.0.1/repo')
+  >>> print(values['name'])
+  Plugin Two
+  >>> print(values['latest_version'])
+  2.0.2
+  >>> pageContent = pageTemplate % values
+
+Testing the creation case::
+
+  >>> site = MwrcSite()
+  >>> if not site.page_exists(values['name']):
+  ...     ret = site.create_page(values['name'], pageContent, 
+  ...                            'create new page')
+
+Testing the update case::
+
+  >>> if site.page_exists(values['name']):
+  ...     ret = site.replace_page(values['name'], values,
+  ...                             'Replace Page')
 
 Clean up after testing
 ----------------------
