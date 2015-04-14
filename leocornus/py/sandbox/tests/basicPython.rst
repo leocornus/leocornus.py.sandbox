@@ -156,6 +156,15 @@ Try the splitlines::
   >>> lines.splitlines()
   ['line one', 'line two', 'line three']
 
+split key=value::
+
+  >>> pair = "key=value"
+  >>> key, value = pair.split("=")
+  >>> print(key)
+  key
+  >>> print(value)
+  value
+
 Check a string ends with something::
 
   >>> aName = 'someting.ends'
