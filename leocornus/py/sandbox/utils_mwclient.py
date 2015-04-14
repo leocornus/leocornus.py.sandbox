@@ -140,3 +140,90 @@ def mw_replace_page(title, values={}):
         ret = thepage.save(onelineContent, 'Replace now')
         return ret
 
+# my MediaWiki site.
+class MwrcSite(object):
+    """The MediaWiki site reading site info from a resouce file.
+
+    The default resource file is located at ~/.mwrc.
+    """
+
+    def __init__(self, rcfile=None):
+        """Construct a site from the given resource file.
+        """
+
+        self.rcfile = rcfile
+        if rcfile == None:
+            # will try the default resource file location:
+            # ~/.mwrc
+            homeFolder = os.path.expanduser("~")
+            self.rcfile = os.path.join(homeFolder, '.mwrc')
+
+        self.site = None
+        # try to read the rcfile and create a site instance.
+        if os.path.exists(self.rcfile):
+            # read wiki site information from the resource file.
+            rc = configparser.ConfigParser()
+            filename = rc.read(self.rcfile)
+            mwinfo = {}
+            mwinfo['host'] = rc.get('mwclient', 'host')
+            mwinfo['path'] = rc.get('mwclient', 'path')
+            mwinfo['username'] = rc.get('mwclient', 'username')
+            mwinfo['password'] = rc.get('mwclient', 'password')
+            # TODO: need check if those values are set properly!
+            self.site = mwclient.Site(mwinfo['host'], 
+                                      path=mwinfo['path'])
+            self.site.login(mwinfo['username'], mwinfo['password'])
+
+    def page_exists(self, title):
+        """return true if a wiki page with the same title exists
+        """
+
+        if self.site == None:
+            return False
+        else:
+            thepage = self.site.Pages[title]
+            return thepage.exists
+
+    def create_page(self, title, content, comment):
+        """Create a new page with the given title, 
+        content and comment
+        """
+
+        ret = None
+        if self.site == None:
+            ret = None
+        else:
+            thepage = self.site.Pages[title]
+            ret = thepage.save(content, summary=comment)
+
+        return ret
+
+    def replace_page(self, title, values={}, comment=""):
+        """Replace the page with new values.
+        """
+
+        if self.site == None:
+            return None
+        else:
+            thepage = self.site.Pages[title]
+            content = thepage.edit()
+            # replace new line with empty string.
+            p = re.compile('\\n\|')
+            onelineContent = p.sub('|', content)
+            # get the template source in one line.
+            p = re.compile('{{(.*)}}')
+            temps = p.findall(onelineContent)
+            oneline = temps[0]
+            # replace | to \n as the standard template format.
+            p = re.compile('\|')
+            lines = p.sub('\\n|', oneline)
+            # now for each new value to replace.
+            for key, value in values.items():
+                p = re.compile("""%s=.*""" % key)
+                lines = p.sub("""%s=%s""" % (key, value), lines)
+            # make the replaced content in one line too
+            p = re.compile('\\n')
+            replaced = p.sub('', lines);
+            onelineContent = onelineContent.replace(oneline, replaced)
+            ret = thepage.save(onelineContent, summary=comment)
+            return ret
