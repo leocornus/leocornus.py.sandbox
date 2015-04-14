@@ -18,7 +18,14 @@ Define a class is very simple in Python::
   ...         self.name = name
   ...         self.gender = gender
 
-How to use a class::
+How to use a class?
+
+Here is the class doc::
+
+  >>> print(People.__doc__)
+  People class
+
+Here are how to create an instance of a class::
 
   >>> one = People("One", "Male")
   >>> two = People("Two", "Female")
