@@ -52,11 +52,14 @@ Get ready some data for testing::
   >>> config_data = """
   ... [simple]
   ... keyone: value one
+  ... key_pattern: (Plugin|Theme) Name:.*
   ... keytwo: multipile line testing
   ...         this is the second line.
   ...  this is the third line
   ... keythree:
   ...  multipile line is different 
+  ...  with some format string ||(abc)s,
+  ...  one more line ||(cde)s
   ...  format.
   ... """
   >>> filename = create_file(testFolder, 'test.cfg', config_data)
@@ -66,13 +69,34 @@ read the config file and verify the values::
   >>> filename = config.read(filename)
   >>> print(config.get('simple', 'keyone'))
   value one
+  >>> print(config.get('simple', 'key_pattern'))
+  (Plugin|Theme) Name:.*
   >>> print(config.get('simple', 'keytwo'))
   multipile line testing
   this is the second line.
   this is the third line
-  >>> print(config.get('simple', 'keythree'))
+  >>> template = config.get('simple', 'keythree')
+  >>> print template
   <BLANKLINE>
   multipile line is different
+  with some format string ||(abc)s,
+  one more line ||(cde)s
+  format.
+
+replace **'||'** with **'%'**, so we could formt the string::
+
+  >>> template = template.replace('||', "%")
+  >>> print(template)
+  <BLANKLINE>
+  multipile line is different
+  with some format string %(abc)s,
+  one more line %(cde)s
+  format.
+  >>> print(template % dict(abc="aaa", cde="bbb"))
+  <BLANKLINE>
+  multipile line is different
+  with some format string aaa,
+  one more line bbb 
   format.
 
 Case Study: WordPress header to MediaWiki template
@@ -93,6 +117,24 @@ Here are some testing data::
   ... path = /wiki/
   ... username = seanchen
   ... password = mypassword
+  ...
+  ... [template]
+  ... base_url: http://my.repo.com/repos
+  ... homepage_label: plugin homepage 
+  ... page_template: {{Feature Infobox
+  ...   |name=%(name)s
+  ...   |internet_page=%(internet_page)s
+  ...   |description=%(description)s
+  ...   |latest_version=%(latest_version)s
+  ...   |download=%(download)s}}
+  ... 
+  ... [headers]
+  ... latest_version: Version:.*
+  ... name: (Plugin|Theme) Name:.*
+  ... description: Description:.*
+  ... package_uri: (Plugin|Theme) URI:.*
+  ... author: Author:.*
+  ... author_uri: Author URI:.*
   ... """
 
 Clean up
