@@ -21,6 +21,91 @@ Create a ConfigParser object::
   >>> config.sections()
   []
 
+Basic
+-----
+
+Here ae some basic things:
+
+- configuration file support multiple-line values,
+  check `RFC 822 Section 3.1.1`_ for details.
+- using **'#'** or **';'** for comments.
+
+Prepare testing
+---------------
+
+Generally import and create testing folder::
+
+  >>> import os
+  >>> from leocornus.py.sandbox.utils_basic import make_test_folder
+  >>> from leocornus.py.sandbox.utils_basic import create_file
+  >>> testFolder = make_test_folder('test-config');
+  >>> print(testFolder)
+  /.../test-config
+
+Question: Can config file handle multi-line values?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The config file handle multiple line value very will.
+Check the following testing for details.
+Get ready some data for testing::
+
+  >>> config_data = """
+  ... [simple]
+  ... keyone: value one
+  ... keytwo: multipile line testing
+  ...         this is the second line.
+  ...  this is the third line
+  ... keythree:
+  ...  multipile line is different 
+  ...  format.
+  ... """
+  >>> filename = create_file(testFolder, 'test.cfg', config_data)
+
+read the config file and verify the values::
+
+  >>> filename = config.read(filename)
+  >>> print(config.get('simple', 'keyone'))
+  value one
+  >>> print(config.get('simple', 'keytwo'))
+  multipile line testing
+  this is the second line.
+  this is the third line
+  >>> print(config.get('simple', 'keythree'))
+  <BLANKLINE>
+  multipile line is different
+  format.
+
+Case Study: WordPress header to MediaWiki template
+--------------------------------------------------
+
+The requirment is to fill out a MediaWiki template with
+values from WordPress header fields.
+The proposal is:
+
+- save the header field to template field mapping in a config file.
+- save the wiki template in a separate file.
+
+Here are some testing data::
+
+  >>> mwrc_data = """
+  ... [mwclient]
+  ... host = wiki.site.domain.com
+  ... path = /wiki/
+  ... username = seanchen
+  ... password = mypassword
+  ... """
+
+Clean up
+--------
+
+Clean up by simply remove the whole test folder::
+
+  >>> import shutil
+  >>> shutil.rmtree(testFolder)
+  >>> os.path.exists(testFolder)
+  False
+
 .. _ConfigParser: https://docs.python.org/2/library/configparser.html
 .. _configparser: https://docs.python.org/3/library/configparser.html
 .. _2to3: https://docs.python.org/2/glossary.html#term-to3
+.. _RFC 822 Section 3.1.1: http://tools.ietf.org/html/rfc822.html#section-3.1
