@@ -24,6 +24,7 @@ This will be module __doc__
 
 import os
 import re
+import subprocess
 import mwclient
 
 # Python version 3.0 using all lowercase module name.
@@ -159,20 +160,27 @@ class MwrcSite(object):
             self.rcfile = os.path.join(homeFolder, '.mwrc')
 
         self.site = None
+        self.headers_info = None
+        self.headers_default = None
+        self.template_info = None
+        self.template_fields = None
+
         # try to read the rcfile and create a site instance.
         if os.path.exists(self.rcfile):
             # read wiki site information from the resource file.
             rc = configparser.ConfigParser()
             filename = rc.read(self.rcfile)
-            mwinfo = {}
-            mwinfo['host'] = rc.get('mwclient', 'host')
-            mwinfo['path'] = rc.get('mwclient', 'path')
-            mwinfo['username'] = rc.get('mwclient', 'username')
-            mwinfo['password'] = rc.get('mwclient', 'password')
+            self.headers_info = rc.items('headers')
+            self.headers_default = dict(rc.items('headers default'))
+            self.templates = dict(rc.items('template', True))
+            self.template_fields = rc.items('template fields', True)
+            mwinfo = dict(rc.items('mwclient'))
             # TODO: need check if those values are set properly!
-            self.site = mwclient.Site(mwinfo['host'], 
-                                      path=mwinfo['path'])
-            self.site.login(mwinfo['username'], mwinfo['password'])
+            if mwinfo.has_key('host'):
+                self.site = mwclient.Site(mwinfo['host'], 
+                                          path=mwinfo['path'])
+                self.site.login(mwinfo['username'], 
+                                mwinfo['password'])
 
     def page_exists(self, title):
         """return true if a wiki page with the same title exists
@@ -224,6 +232,52 @@ class MwrcSite(object):
             # make the replaced content in one line too
             p = re.compile('\\n\|')
             replaced = p.sub('|', lines);
-            onelineContent = onelineContent.replace(oneline, replaced)
+            onelineContent = onelineContent.replace(oneline, 
+                                                    replaced)
             ret = thepage.save(onelineContent, summary=comment)
             return ret
+
+    def template_values(self, filepath, pkg_name):
+        """get ready all need values for the wiki template.
+        """
+
+        if self.headers_info == None:
+            return None
+
+        headers = self.extract_wp_headers(filepath)
+        # adding the package name.
+        headers['package_name'] = pkg_name
+        for field_name, template in self.template_fields:
+            field_value = template % headers
+            headers[field_name] = field_value
+
+        return headers
+
+    def extract_wp_headers(self, filepath):
+        """extract all WordPress file header fields from the given
+        file. headers are configured in mw resource file,
+        under [headers] section.
+        """
+
+        if self.headers_info == None:
+            return None
+
+        # return as a dict objet.
+        ret = {}
+        for field_name, pattern in self.headers_info:
+            grep_pat = """grep -oE '%s' %s""" % (pattern, filepath)
+
+            try:
+                value = subprocess.check_output(grep_pat, shell=True)
+                # only split the first ":"
+                value = value.strip().split(b":", 1)
+                ret[field_name] = value[1].strip()
+            except subprocess.CalledProcessError:
+                # could NOT find the pattern.
+                if self.headers_default.has_key(field_name):
+                    ret[field_name] = self.headers_default[field_name]
+                else:
+                    # empty string as the default.
+                    ret[field_name] = ""
+
+        return ret
