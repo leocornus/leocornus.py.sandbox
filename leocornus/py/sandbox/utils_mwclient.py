@@ -222,8 +222,8 @@ class MwrcSite(object):
                 p = re.compile("""%s=.*""" % key)
                 lines = p.sub("""%s=%s""" % (key, value), lines)
             # make the replaced content in one line too
-            p = re.compile('\\n')
-            replaced = p.sub('', lines);
+            p = re.compile('\\n\|')
+            replaced = p.sub('|', lines);
             onelineContent = onelineContent.replace(oneline, replaced)
             ret = thepage.save(onelineContent, summary=comment)
             return ret

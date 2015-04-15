@@ -213,7 +213,7 @@ Preparing anothe plugin for testing::
   >>> data = """/**
   ...  * Plugin Name: Plugin Two
   ...  * Plugin URI: http://www.plugin.com
-  ...  * Description: plugin description.
+  ...  * Description: plugin two description.
   ...  * Version:  2.0.2
   ...  */
   ...  # *comments**
