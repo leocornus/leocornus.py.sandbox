@@ -121,12 +121,12 @@ Here are some testing data::
   ... [template]
   ... base_url: http://my.repo.com/repos
   ... homepage_label: plugin homepage 
-  ... page_template: {{Feature Infobox
-  ...   |name=%(name)s
-  ...   |internet_page=%(internet_page)s
-  ...   |description=%(description)s
-  ...   |latest_version=%(latest_version)s
-  ...   |download=%(download)s}}
+  ... wiki_template: {{Feature Infobox
+  ...   |name=||(name)s
+  ...   |internet_page=||(internet_page)s
+  ...   |description=||(description)s
+  ...   |latest_version=||(latest_version)s
+  ...   |download=||(download)s}}
   ... 
   ... [headers]
   ... latest_version: Version:.*
@@ -136,6 +136,20 @@ Here are some testing data::
   ... author: Author:.*
   ... author_uri: Author URI:.*
   ... """
+  >>> mwrc = create_file(testFolder, '.mwrc', mwrc_data)
+
+Explore the config file::
+
+  >>> filename = config.read(mwrc)
+  >>> print(filename[0] == mwrc)
+  True
+
+items function will return the whole section in pairs like
+**(key, value)**::
+
+  >>> headers = config.items('headers')
+  >>> print(headers[0])
+  ('latest_version', 'Version:.*')
 
 Clean up
 --------
