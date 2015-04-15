@@ -26,7 +26,7 @@ All temporary testing files will be stored here.
   >>> testFolder = os.path.join(homeFolder, 'testmw')
   >>> os.path.exists(testFolder)
   False
-  >>> create_file(testFolder, 'readme.txt', '')
+  >>> filename = create_file(testFolder, 'readme.txt', '')
   >>> os.path.exists(testFolder)
   True
 
@@ -65,7 +65,7 @@ Here is the content of the plugin file::
 We will create this file in a plugin folder::
 
   >>> pluginFolder = os.path.join(testFolder, 'pluginone')
-  >>> create_file(pluginFolder, 'one.php', data)
+  >>> filename = create_file(pluginFolder, 'one.php', data)
 
 Here is a theme file header.
 
@@ -220,7 +220,7 @@ Preparing anothe plugin for testing::
   ... <?php
   ... phpinfo()"""
   >>> pluginTwo = os.path.join(testFolder, 'plugintwo')
-  >>> create_file(pluginTwo, 'two.php', data)
+  >>> filename = create_file(pluginTwo, 'two.php', data)
 
 Extract the WordPress Headers::
 

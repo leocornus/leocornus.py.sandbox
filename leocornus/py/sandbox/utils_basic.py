@@ -68,7 +68,7 @@ def create_file(folder, filename, content):
     False
     >>> os.path.isdir(testFolder)
     False
-    >>> create_file(testFolder, 'one.txt', 'hello file!')
+    >>> filename = create_file(testFolder, 'one.txt', 'hello file!')
     >>> os.path.isdir(testFolder)
     True
 
@@ -89,6 +89,7 @@ def create_file(folder, filename, content):
     f = open(fullName, 'r+')
     f.write(content)
     f.close()
+    return fullName
 
 def extract_wp_header(filepath, **default):
     """extract WordPress file header fields values in a dict.
