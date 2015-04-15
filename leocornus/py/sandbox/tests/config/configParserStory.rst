@@ -135,6 +135,9 @@ Here are some testing data::
   ... package_uri: (Plugin|Theme) URI:.*
   ... author: Author:.*
   ... author_uri: Author URI:.*
+  ...
+  ... [headers default]
+  ... latest_version: 1.0
   ... """
   >>> mwrc = create_file(testFolder, '.mwrc', mwrc_data)
 
@@ -150,6 +153,12 @@ items function will return the whole section in pairs like
   >>> headers = config.items('headers')
   >>> print(headers[0])
   ('latest_version', 'Version:.*')
+
+the esay way to convert a list of pairs to a dict::
+
+  >>> defaults = dict(config.items('headers default'))
+  >>> print(defaults['latest_version'])
+  1.0
 
 Clean up
 --------
