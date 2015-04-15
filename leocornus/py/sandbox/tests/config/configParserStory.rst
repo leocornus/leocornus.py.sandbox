@@ -118,15 +118,17 @@ Here are some testing data::
   ... username = seanchen
   ... password = mypassword
   ...
+  ... [template fields]
+  ... internet_page: [%(package_uri)s plugin homepage]
+  ... download: [http://www.bases.com/repos/%(package_name)s.%(latest_version)s.zip %(package_name)s.%(latest_version)s.zip]
+  ...
   ... [template]
-  ... base_url: http://my.repo.com/repos
-  ... homepage_label: plugin homepage 
   ... wiki_template: {{Feature Infobox
-  ...   |name=||(name)s
-  ...   |internet_page=||(internet_page)s
-  ...   |description=||(description)s
-  ...   |latest_version=||(latest_version)s
-  ...   |download=||(download)s}}
+  ...   |name=%(name)s
+  ...   |internet_page=%(internet_page)s
+  ...   |description=%(description)s
+  ...   |latest_version=%(latest_version)s
+  ...   |download=%(download)s}}
   ... 
   ... [headers]
   ... latest_version: Version:.*
@@ -157,8 +159,17 @@ items function will return the whole section in pairs like
 the esay way to convert a list of pairs to a dict::
 
   >>> defaults = dict(config.items('headers default'))
+  >>> print(defaults.has_key('latest_version'))
+  True
   >>> print(defaults['latest_version'])
   1.0
+
+Testing the **raw** option::
+
+  >>> template_info = dict(config.items('template', True))
+  >>> print(template_info['wiki_template'])
+  {{Feature Infobox
+  ...
 
 Clean up
 --------
