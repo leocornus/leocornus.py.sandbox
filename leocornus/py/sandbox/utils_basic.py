@@ -16,8 +16,40 @@ import os
 import subprocess
 import shutil
 
-# utility function to create files for testing...
+# make a temp folder for testing...
+def make_test_folder(folder_name="test"):
+    """create a folder in current user's home folder for
+    testing. The default folder name is test.
+    
+    it will return the absolute path to the created folder.
+    """
 
+    """
+    quick test the function here::
+
+    >>> import os
+    >>> from leocornus.py.sandbox.utils_basic import make_test_folder
+    >>> testFolder = make_test_folder()
+    >>> os.path.exists(testFolder)
+    True
+    >>> os.path.isdir(testFolder)
+    True
+
+    now we need clean up.
+
+    >>> import shutil
+    >>> shutil.rmtree(testFolder)
+    >>> os.path.exists(testFolder)
+    False
+
+    """
+
+    homeFolder = os.path.expanduser("~")
+    testFolder = os.path.join(homeFolder, folder_name)
+    os.mkdir(testFolder)
+    return testFolder
+
+# utility function to create files for testing...
 def create_file(folder, filename, content):
     """Create file with the give name in the given folder.
 
