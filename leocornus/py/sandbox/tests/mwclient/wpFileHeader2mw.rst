@@ -176,6 +176,7 @@ live MediaWiki site::
 
   >>> if not mw_page_exists(pageTitle):
   ...     ret = mw_create_page(pageTitle, pageContent)
+  ...     print(ret)  # doctest: +SKIP
 
 Update flow
 ~~~~~~~~~~~
@@ -188,7 +189,8 @@ Update flow
 ::
 
   >>> if mw_page_exists(pageTitle):
-  ...    ret = mw_replace_page(pageTitle, values)
+  ...     ret = mw_replace_page(pageTitle, values)
+  ...     print(ret)  # doctest: +SKIP
 
 Replace strategy:
 
