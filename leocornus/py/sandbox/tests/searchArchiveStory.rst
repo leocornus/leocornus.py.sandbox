@@ -76,12 +76,10 @@ Here is the function::
   ...     zip = zipfile.ZipFile(archivePath, "w", 
   ...        compression=zipfile.ZIP_DEFLATED)
   ...     os.chdir(rootFolder)
-  ...     for dirpath, dirnames, filenames in os.walk('./' + 
-  ...                                                 folderName):
+  ...     for dirpath, dirnames, filenames in os.walk(folderName):
   ...         for name in filenames:
   ...             path = os.path.normpath(os.path.join(dirpath, name))
-  ...             if os.path.isfile(path):
-  ...                 zip.write(path, path)
+  ...             zip.write(path, path)
   ...     zip.close()
   ...     # need go back to default home foler.
   ...     os.chdir(homeFolder)
