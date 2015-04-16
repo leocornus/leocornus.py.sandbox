@@ -163,7 +163,7 @@ class MwrcSite(object):
         self.headers_info = None
         self.headers_default = None
         self.template_info = None
-        self.template_fields = None
+        self.template_fields = []
 
         # try to read the rcfile and create a site instance.
         if os.path.exists(self.rcfile):
@@ -181,6 +181,12 @@ class MwrcSite(object):
                                           path=mwinfo['path'])
                 self.site.login(mwinfo['username'], 
                                 mwinfo['password'])
+        else:
+            # need set up the default values for header info.
+            # only need version for minimium requirment.
+            # WordPress file header for Version is the default
+            # pattern.
+            self.headers_info = [('latest_version', 'Version:.*')]
 
     def page_exists(self, title):
         """return true if a wiki page with the same title exists

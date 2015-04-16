@@ -87,6 +87,18 @@ test extract headers and get ready the template values::
   >>> print(values['download'])
   [http://www.bases.com...packageone.2.0.22.zip]
 
+test if we didn't set the wiki resource file or 
+the wiki source file is not exist.::
+
+  >>> site = MwrcSite('/var/etc/.mwrc')
+  >>> values = site.template_values(pluginfile, 'packageagain')
+  >>> print(len(values))
+  2
+  >>> print(values['package_name'])
+  packageagain
+  >>> print(values['latest_version'])
+  2.0.22
+
 Clean up
 --------
 
