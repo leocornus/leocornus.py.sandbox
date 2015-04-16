@@ -35,6 +35,10 @@ Here is a dummy plugin::
   ...  */
   ...  # *comments**
   ... <?php
+  ... some files may have the same pattern with header in the 
+  ... file content or source code.
+  ... we will only take the first occurance.
+  ... Version: 3.40
   ... phpinfo()"""
   >>> pluginfile = create_file(testFolder, 'plugin.php', data)
   >>> print(pluginfile)

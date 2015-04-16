@@ -132,6 +132,10 @@ def extract_wp_header(filepath, **default):
 
         try:
             value = subprocess.check_output(grep_pattern, shell=True)
+            # we will only get the first line of the reuslt.
+            # this is for some package has more than one 
+            # header in a file.
+            value = value.splitlines()[0]
             # only split the first ":"
             value = value.strip().split(b":", 1)
             ret[field_name] = value[1].strip()
