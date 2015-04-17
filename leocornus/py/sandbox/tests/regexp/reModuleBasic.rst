@@ -38,13 +38,16 @@ Testing this lines of strings::
 
   >>> source = """{{Feature Infobox
   ... |name=Plugin One
-  ... |name=Plugin Two|type=something
+  ... |name =Plugin Two|type=something
   ... |internet_page=[http://www.plugin.com Plugin Homepage]
   ... |description=plugin description.kkkk
   ... |latest_version=1.0.1
   ... |download=[http://10.1.1.1/repo/one.1.0.1.zip one.1.0.1.zip]}}
   ... other content.
   ... """
+
+Handle new line
+~~~~~~~~~~~~~~~
 
 try to replace new line with empty string, 
 only for the template content
@@ -67,6 +70,18 @@ get the template source in one line.
   >>> print(oneline)
   Feature Infobox|name=Plu...zip]
 
+The flag **re.DOTALL** plays the magic for **dot(.)** to 
+match everything including the newline::
+
+  >>> p = re.compile('{{(.*)}}', re.DOTALL)
+  >>> temps = p.findall(source)
+  >>> print(temps)
+  ['Feature Infobox\n|name=...zip]']
+  >>> print(temps[0])
+  Feature Infobox
+  |name=Plugin One
+  ...
+
 replace **\|** with new line **\n|**, this is the standard format.
 ::
 
@@ -82,7 +97,17 @@ find all pattern like **key=value** from the oneline source::
   >>> p = re.compile('name=.*')
   >>> names = p.findall(lines)
   >>> print(names)
-  ['name=Plugin One', 'name=Plugin Two']
+  ['name=Plugin One']
+
+The **\s** will match any whitespace.
+It is the same with **[ \t\n\r\f\v]**.
+If you want cover different cases like **key = value** or 
+**key =value** we need use the following pattern::
+
+  >>> p = re.compile('name[\s]*=.*')
+  >>> names = p.findall(lines)
+  >>> print(names)
+  ['name=Plugin One', 'name =Plugin Two']
 
 now replace with exact values.
 Try some simple search and replace::
@@ -92,6 +117,17 @@ Try some simple search and replace::
   >>> print(lines)
   Feature Infobox
   |name=Plugin One New!
+  |name =Plugin Two...
+  ...
+
+The one covers whitespaces will replace both names::
+
+  >>> p = re.compile('name[\s]*=.*')
+  >>> lines = p.sub("name=Plugin One New!", lines)
+  >>> print(lines)
+  Feature Infobox
+  |name=Plugin One New!
+  |name=Plugin One New!...
   ...
 
 replace new line with empty string::
