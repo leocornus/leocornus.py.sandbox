@@ -70,6 +70,9 @@ get the template source in one line.
   >>> print(oneline)
   Feature Infobox|name=Plu...zip]
 
+DOTALL flag
+~~~~~~~~~~~
+
 The flag **re.DOTALL** plays the magic for **dot(.)** to 
 match everything including the newline::
 
@@ -77,7 +80,8 @@ match everything including the newline::
   >>> temps = p.findall(source)
   >>> print(temps)
   ['Feature Infobox\n|name=...zip]']
-  >>> print(temps[0])
+  >>> template_original_content = temps[0]
+  >>> print(template_original_content)
   Feature Infobox
   |name=Plugin One
   ...
@@ -91,6 +95,9 @@ replace **\|** with new line **\n|**, this is the standard format.
   Feature Infobox
   |name=Plugin One
   ...
+
+Handle whitespace
+~~~~~~~~~~~~~~~~~
 
 find all pattern like **key=value** from the oneline source::
 
@@ -141,3 +148,42 @@ replace oneline with replaced::
   >>> print(onelinesrc)
   {{Feature Infobox|name=Plugin One New!...}}
   other content.
+
+Search replace Multiple lines
+-----------------------------
+
+using the same source for testing::
+
+  >>> p = re.compile('{{(Feature Infobox.*)}}', re.DOTALL)
+  >>> temps = p.findall(source)
+  >>> print(temps)
+  ['Feature Infobox\n|name=...zip]']
+  >>> original_content = temps[0]
+  >>> print(original_content)
+  Feature Infobox
+  |name=Plugin One
+  |name =Plugin Two|type=something
+  ...
+
+now we search and replace the original conent::
+
+  >>> p = re.compile('name[\s]*=.*')
+  >>> new_content = p.sub('name=Plugin One New!', original_content)
+  >>> print(new_content)
+  Feature Infobox
+  |name=Plugin One New!
+  |name=Plugin One New!
+  ...
+  >>> new_source = source.replace(original_content, new_content)
+  >>> print(new_source)
+  {{Feature Infobox
+  |name=Plugin One New!
+  |name=Plugin One New!
+  ...}}
+  other content.
+  >>> print(source == new_source)
+  False
+
+  >>> p = re.compile('type[\s]*=.*')
+  >>> new_content = p.sub('type=Newtype!', original_content)
+  >>>  
