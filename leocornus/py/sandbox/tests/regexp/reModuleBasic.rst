@@ -73,7 +73,7 @@ get the template source in one line.
 The flag **re.DOTALL** plays the magic for **dot(.)** to 
 match everything including the newline::
 
-  >>> p = re.compile('{{(.*)}}', re.DOTALL)
+  >>> p = re.compile('{{(Feature Infobox.*)}}', re.DOTALL)
   >>> temps = p.findall(source)
   >>> print(temps)
   ['Feature Infobox\n|name=...zip]']
