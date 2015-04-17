@@ -165,6 +165,26 @@ split key=value::
   >>> print(value)
   value
 
+The white space will stay as it is unless you do something on it.
+The strip function will NOT remove white spaces in the **pair** 
+string.
+But it will remove the beginning and ending white spaces::
+
+  >>> pair = "key = value"
+  >>> print(pair.strip())
+  key = value
+  >>> key, value = pair.split("=")
+  >>> print(key == 'key ')
+  True
+  >>> print(value)
+   value
+  >>> print(value == ' value')
+  True
+  >>> print(key.strip() == 'key ')
+  False
+  >>> print(value.strip())
+  value
+
 Check a string ends with something::
 
   >>> aName = 'someting.ends'
