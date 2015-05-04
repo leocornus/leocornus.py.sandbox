@@ -3,7 +3,9 @@ Tips for subprocess
 
 import modules and utilities::
 
-  >>> import subprocess
+  >>> from subprocess import STDOUT
+  >>> from subprocess import PIPE
+  >>> from subprocess import Popen
   >>> from subprocess import check_output
   >>> from subprocess import CalledProcessError
 
@@ -29,7 +31,7 @@ We need set the **stderr** to be **subprocess.STDOUT**.
   >>> returncode = 0
   >>> try:
   ...   output = check_output(["ls", "-la", "NONE_EXIT"], 
-  ...                         stderr=subprocess.STDOUT)
+  ...                         stderr=STDOUT)
   ... except CalledProcessError as cpe:
   ...   output = cpe.output
   ...   returncode = cpe.returncode
@@ -43,3 +45,28 @@ We need set the **stderr** to be **subprocess.STDOUT**.
 check_output and pipe
 ---------------------
 
+It is very easy to hadle pipe by uing subprocess module.
+
+The following example will add line number to the output of ls,
+by using the **cat -n** option.
+It is the same with command: **ls -la /usr | cat -n**.
+::
+
+  >>> ls = Popen(['ls', '-la', '/usr'], stdout=PIPE)
+  >>> output = check_output(['cat', '-n'], stdin=ls.stdout)
+  >>> print(output)
+   1...total...
+
+We could add more than one pipe.
+The following example will simulate command:
+**ls -la /usr | cat -n | wc -l**.
+We have to close the pipe properly right after it is been used.
+::
+
+  >>> ls = Popen(['ls', '-la', '/usr'], stdout=PIPE)
+  >>> catls = Popen(['cat', '-n'], stdout=PIPE, stdin=ls.stdout)
+  >>> ls.stdout.close()
+  >>> output = check_output(['wc', '-l'], stdin=catls.stdout)
+  >>> catls.stdout.close()
+  >>> output > 1
+  True
