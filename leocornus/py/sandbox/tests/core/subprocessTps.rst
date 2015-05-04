@@ -65,8 +65,8 @@ We have to close the pipe properly right after it is been used.
 
   >>> ls = Popen(['ls', '-la', '/usr'], stdout=PIPE)
   >>> catls = Popen(['cat', '-n'], stdout=PIPE, stdin=ls.stdout)
-  >>> ls.stdout.close()
+  >>> #ls.stdout.close()
   >>> output = check_output(['wc', '-l'], stdin=catls.stdout)
-  >>> catls.stdout.close()
+  >>> #catls.stdout.close()
   >>> output > 1
   True
