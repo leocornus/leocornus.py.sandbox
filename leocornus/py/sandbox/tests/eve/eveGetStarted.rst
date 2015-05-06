@@ -69,3 +69,30 @@ Construct the Eve app.
   >>> app = Eve(auth=None, settings=settings, 
   ...           validator=ValidatorSQL, data=SQL)
 
+bind SQLAlchemy
+::
+
+  >>> db = app.data.driver
+  >>> Base.metadata.bind = db.engine
+  >>> db.Model = Base
+  >>> db.create_all()
+
+Insert some example data in the db
+::
+
+  >>> test_data = [
+  ...      (u'George', u'Washington'),
+  ...      (u'John', u'Adams'),
+  ...      (u'Thomas', u'Jefferson'),
+  ...  ]
+  >>> if not db.session.query(People).count():
+  ...     for item in test_data:
+  ...         db.session.add(People.from_tuple(item))
+  ...     db.session.commit()
+
+Now let's start the service.
+::
+
+  >>> #app.run(debug=True, use_reloader=False)
+
+# using reloaded will destory in-memory sqlite db
