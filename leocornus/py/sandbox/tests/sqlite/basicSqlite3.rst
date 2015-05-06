@@ -81,3 +81,4 @@ This will depends on the Fabric_, assume we have this installed.
   [localhost] local: rm -rf ...
 
 .. _SQLite: https://www.sqlite.org/
+.. _Fabric: http://fabfile.org
