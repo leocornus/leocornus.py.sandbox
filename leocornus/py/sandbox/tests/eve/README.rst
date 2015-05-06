@@ -19,7 +19,7 @@ Construct the Eve_ app and run it.
   >>> from eve import Eve
   >>> from eve_sqlalchemy import SQL
   >>> app = Eve(auth=None, settings=mini_settings, data=SQL)
-  >>> app.run()
+  >>> #app.run()
 
 Run Eve_ app on uWSGI
 

@@ -9,6 +9,8 @@ Here is the module name. Its egg name is **SQLAlchemy**.
   >>> print(sqlalchemy)
   <module 'sqlalchemy' from ...>
 
+Go through step by step for `sqlalchemy tutorial`_.
 
 
 .. _SQLAlchemy: http://www.sqlalchemy.org/
+.. _sqlalchemy tutorial: http://www.pythoncentral.io/introductory-tutorial-python-sqlalchemy/
