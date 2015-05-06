@@ -70,3 +70,14 @@ We have to close the pipe properly right after it is been used.
   >>> #catls.stdout.close()
   >>> output > 1
   True
+
+Popen tips
+----------
+
+**Popen** class will execute a child program in a new process.
+The variable **pid** will return the porcess id.
+::
+
+  >>> ls = Popen(['ls'], shell=True)
+  >>> ls.pid > 0
+  True
