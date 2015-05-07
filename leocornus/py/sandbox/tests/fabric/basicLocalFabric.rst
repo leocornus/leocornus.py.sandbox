@@ -33,10 +33,10 @@ how fabric handle output of the local operations?
   >>> homeFolder = os.path.expanduser('~')
   >>> ret = local('pwd', True)
   [localhost] local: pwd
-  >>> print(ret)
-  /home/...
+  >>> print(ret) # doctest 
+  /...
   >>> ret == homeFolder
-  True
+  False
 
 Mini CI
 -------
@@ -50,7 +50,8 @@ Try to simulate the following task:
   success or failed.
 ::
 
-  >>> clone = local('git clone https://github.com/leocornus/leocornus.recipe.distribute.git', False)
+  >>> with lcd(homeFolder):
+  ...     clone = local('git clone https://github.com/leocornus/leocornus.recipe.distribute.git', False)
   [localhost] local: git clone ...
   >>> testFolder = os.path.join(homeFolder, 'leocornus.recipe.distribute')
   >>> with lcd(testFolder):
