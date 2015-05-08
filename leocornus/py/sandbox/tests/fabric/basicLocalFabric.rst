@@ -28,6 +28,9 @@ Local operations
 ----------------
 
 how fabric handle output of the local operations?
+The param capture will tell where the output go.
+If it is **True**, all output will be packaged as return value.
+If it is **False**, all output will be print out on console.
 ::
 
   >>> homeFolder = os.path.expanduser('~')
