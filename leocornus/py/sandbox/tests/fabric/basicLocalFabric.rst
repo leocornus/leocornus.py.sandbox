@@ -35,8 +35,6 @@ how fabric handle output of the local operations?
   [localhost] local: pwd
   >>> print(ret) # doctest 
   /...
-  >>> ret == homeFolder
-  False
 
 Mini CI
 -------
