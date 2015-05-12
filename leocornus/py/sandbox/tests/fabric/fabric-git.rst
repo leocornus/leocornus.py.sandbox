@@ -141,7 +141,7 @@ Here are the steps::
   [localhost] local: git config core.sparsecheckout true
   [localhost] local: echo docs/ >> .git/info/sparse-checkout
   [localhost] local: git pull origin master
-  [localhost] local: ls -la /home/egov/docs/docs
+  [localhost] local: ls -la /home...
 
 Once we pull the latest version, we could checkout a certain 
 commit by using the regular checkout command.
