@@ -115,6 +115,37 @@ Analyze the log message with the following commands::
   $ git log --format=%h --name-only -1 8564fb4
   $ git log --color -1 --name-status 8564fb4
 
+Git sparse checkout
+-------------------
+
+The sparse checkout is allow user to checkout one or more subdiectory
+ONLY.
+We will test the docs folder of angular-trac-client project.
+get ready the folder::
+
+  >>> docs_folder = os.path.join(home_folder, 'docs')
+  >>> os.mkdir(docs_folder)
+
+Here are the steps::
+
+  >>> name = 'origin'
+  >>> with lcd(docs_folder):
+  ...     r = local('git init', True)
+  ...     r = local('git remote add -f %s %s' % (name, repo_url), True)
+  ...     r = local('git config core.sparsecheckout true', True)
+  ...     r = local('echo docs/ >> .git/info/sparse-checkout', True)
+  ...     r = local('git pull origin master', True)
+  ...     r = local('ls -la %s/docs' % docs_folder, True)
+  [localhost] local: git init
+  [localhost] local: git remote add -f origin ...
+  [localhost] local: git config core.sparsecheckout true
+  [localhost] local: echo docs/ >> .git/info/sparse-checkout
+  [localhost] local: git pull origin master
+  [localhost] local: ls -la /home/egov/docs/docs
+
+Once we pull the latest version, we could checkout a certain 
+commit by using the regular checkout command.
+
 Clean up
 --------
 
@@ -122,4 +153,10 @@ remove the projec folder to clean up.
 ::
 
   >>> rm = local('rm -rf %s' % prj_folder, False)
+  [localhost] local: rm -rf ...
+
+Remove the sparse checkout folder.
+::
+
+  >>> rm = local('rm -rf %s' % docs_folder, False)
   [localhost] local: rm -rf ...
