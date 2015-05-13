@@ -118,14 +118,19 @@ subfolder.
   >>> log_option = '--name-only --format=%h -1'
   >>> with lcd(prj_folder):
   ...     remote = local('git remote -v', True)
+  ...     branch = local('git branch', True)
   ...     changeset = local('git log %s %s' % (log_option, new_id),
   ...                       True)
   [localhost] local: git remote -v
+  [localhost] local: git branch 
   [localhost] local: git log ...
   >>> remote = remote.splitlines()[0]
   >>> remote = remote.strip().split()[1]
   >>> remote == repo_url
   True
+  >>> branch = branch.split()[1]
+  >>> print(branch)
+  master
   >>> change_file = changeset.strip().splitlines()[2]
   >>> folders = change_file.split(os.sep)
   >>> subfolder = os.path.join(folders[0], folders[1])
