@@ -37,8 +37,8 @@ The **prj_folder** will be the working folder for git repo.
   >>> with lcd(test_folder):
   ...     clone = local('git clone %s' % repo_url, True)
   [localhost] local: git clone ...
-  >>> prj_folder = os.path.join(test_folder, 'angular-trac-client')
-  >>> prj_folder = os.path.join(prj_folder, 'app')
+  >>> prj0_folder = os.path.join(test_folder, 'angular-trac-client')
+  >>> prj_folder = os.path.join(prj0_folder, 'app')
 
 Explore git logs
 ----------------
@@ -64,10 +64,64 @@ Try to execute tests commit by commit.
 ::
 
   ...>>> with lcd(prj_folder):
+  ...     checkout = local('git checkout %s' % ids[1], False)
+  ...     config = local('git config url."https://".insteadof git://')
+  ...     test = local('npm test', False)
   ...     test = local('npm test', False)
   [localhost] local: git checkout ...
   [localhost] local: git config ...
   [localhost] local: npm test
+
+.cicfg case
+-----------
+
+Try to testing the ability to using **.cicfg** file to customize
+testing scripts.
+This file should have the configuration file format. 
+Here is an example file:
+::
+
+  >>> from leocornus.py.sandbox.utils_basic import create_file
+  >>> ci_scripts = """
+  ... [ci]
+  ... install:
+  ...   npm install
+  ... 
+  ... script:
+  ...   npm test
+  ... """
+  >>> filename = create_file(prj0_folder, '.cicfg', ci_scripts)
+
+We will using the config parser to read the file and get all scripts.
+::
+
+  >>> try:
+  ...     import ConfigParser as configparser
+  ... except ImportError:
+  ...     import configparser
+  >>> config = configparser.ConfigParser()
+  >>> filename = config.read(filename)
+  >>> install = config.get('ci', 'install')
+  >>> script = config.get('ci', 'script')
+  >>> install = install.strip().splitlines()
+  >>> print(install)
+  ['npm install']
+  >>> script = script.strip().splitlines()
+  >>> print(script)
+  ['npm test']
+
+no let execute those script.
+::
+
+  >>> with lcd(prj0_folder):
+  ...     r = local('git config url."https://".insteadof git://')
+  ...     r = local('%s >> .log' % install[0], False)
+  ...     r = local('%s >> .log' % script[0], False)
+  ...     r = local('cat .log', False)
+  [localhost] local: git config url."https://".insteadof git://
+  [localhost] local: npm install >> .log
+  [localhost] local: npm test >> .log
+  [localhost] local: cat .log
 
 Logic for build log
 -------------------
