@@ -76,12 +76,22 @@ read the config file and verify the values::
   this is the second line.
   this is the third line
   >>> template = config.get('simple', 'keythree')
-  >>> print template
+  >>> print(template)
   <BLANKLINE>
   multipile line is different
   with some format string ||(abc)s,
   one more line ||(cde)s
   format.
+
+test if key is not exist!
+::
+
+  >>> config.has_option('simple', 'no_exist')
+  False
+  >>> config.has_section('no section') 
+  False
+  >>> config.has_section('simple')
+  True
 
 replace **'||'** with **'%'**, so we could formt the string::
 
