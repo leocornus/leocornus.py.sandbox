@@ -31,11 +31,14 @@ The **prj_folder** will be the working folder for git repo.
 ::
 
   >>> home_folder = os.path.expanduser('~')
+  >>> test_folder = os.path.join(home_folder, 'test-git')
+  >>> os.mkdir(test_folder)
   >>> repo_url = 'https://github.com/leocornus/angular-trac-client.git'
-  >>> with lcd(home_folder):
+  >>> with lcd(test_folder):
   ...     clone = local('git clone %s' % repo_url, True)
   [localhost] local: git clone ...
-  >>> prj_folder = os.path.join(home_folder, 'angular-trac-client')
+  >>> prj_folder = os.path.join(test_folder, 'angular-trac-client')
+  >>> prj_folder = os.path.join(prj_folder, 'app')
 
 Explore git logs
 ----------------
@@ -46,7 +49,7 @@ The format option **--format=%h** will make the trick.
 
   >>> with lcd(prj_folder):
   ...     local('git pull', True)
-  ...     ids = local('git log --format=%h -10', True)
+  ...     ids = local('git log --format=%h -10 .', True)
   [localhost] local: git pull
   'Already up-to-date.'
   [localhost] local: git log ...
@@ -61,8 +64,6 @@ Try to execute tests commit by commit.
 ::
 
   ...>>> with lcd(prj_folder):
-  ...     checkout = local('git checkout %s' % ids[1], False)
-  ...     config = local('git config url."https://".insteadof git://')
   ...     test = local('npm test', False)
   [localhost] local: git checkout ...
   [localhost] local: git config ...
@@ -110,12 +111,33 @@ The **% ** will be used to escape itself in a format string.
   >>> new_id == ids[1]
   True
 
+Try to get some details for the new commit: git remote and projcet 
+subfolder.
+::
+
+  >>> log_option = '--name-only --format=%h -1'
+  >>> with lcd(prj_folder):
+  ...     remote = local('git remote -v', True)
+  ...     changeset = local('git log %s %s' % (log_option, new_id),
+  ...                       True)
+  [localhost] local: git remote -v
+  [localhost] local: git log ...
+  >>> remote = remote.splitlines()[0]
+  >>> remote = remote.strip().split()[1]
+  >>> remote == repo_url
+  True
+  >>> change_file = changeset.strip().splitlines()[2]
+  >>> folders = change_file.split(os.sep)
+  >>> subfolder = os.path.join(folders[0], folders[1])
+  >>> print(subfolder)
+  app/...
+
 The case that there is no new commit.
 ::
 
   >>> last_id = ids[0]
   >>> with lcd(prj_folder):
-  ...     new_ids = local('git log %s %s..' % (format, last_id), True)
+  ...     new_ids = local('git log %s %s.. .' % (format, last_id), True)
   [localhost] local: git log ...
   >>> new_ids == ""
   True
@@ -164,7 +186,7 @@ Clean up
 remove the projec folder to clean up.
 ::
 
-  >>> rm = local('rm -rf %s' % prj_folder, False)
+  >>> rm = local('rm -rf %s' % test_folder, False)
   [localhost] local: rm -rf ...
 
 Remove the sparse checkout folder.
