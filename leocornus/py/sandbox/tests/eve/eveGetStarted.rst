@@ -84,7 +84,7 @@ Insert some example data in the db
   ...      (u'George', u'Washington'),
   ...      (u'John', u'Adams'),
   ...      (u'Thomas', u'Jefferson'),
-  ...  ]
+  ... ]
   >>> if not db.session.query(People).count():
   ...     for item in test_data:
   ...         db.session.add(People.from_tuple(item))

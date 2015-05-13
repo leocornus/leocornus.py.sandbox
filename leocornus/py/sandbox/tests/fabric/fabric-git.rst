@@ -110,6 +110,18 @@ The **% ** will be used to escape itself in a format string.
   >>> new_id == ids[1]
   True
 
+The case that there is no new commit.
+::
+
+  >>> last_id = ids[0]
+  >>> with lcd(prj_folder):
+  ...     new_ids = local('git log %s %s..' % (format, last_id), True)
+  [localhost] local: git log ...
+  >>> new_ids == ""
+  True
+  >>> not new_ids
+  True
+
 Analyze the log message with the following commands::
 
   $ git log --format=%h --name-only -1 8564fb4
