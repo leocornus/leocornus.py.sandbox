@@ -56,11 +56,14 @@ Get ready some data for testing::
   ... keytwo: multipile line testing
   ...         this is the second line.
   ...  this is the third line
+  ... # this a comment line
   ... keythree:
   ...  multipile line is different 
   ...  with some format string ||(abc)s,
   ...  one more line ||(cde)s
   ...  format.
+  ... ; another comment line star with ;
+  ... keyfour: value four
   ... """
   >>> filename = create_file(testFolder, 'test.cfg', config_data)
 
