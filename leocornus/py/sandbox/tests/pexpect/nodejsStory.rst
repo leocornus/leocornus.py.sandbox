@@ -122,7 +122,7 @@ Try to print the whole npm log file.
 
   >>> log = pexpect.run('cat %s' % npm_log_file)
   >>> print(log)
-  ...angular...
+  <BLANKLINE>...
 
 clean up
 --------
