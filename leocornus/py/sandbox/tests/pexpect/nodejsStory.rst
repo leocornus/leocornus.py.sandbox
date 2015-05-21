@@ -102,7 +102,8 @@ show the e2e test result.
 ::
 
   >>> print(protractor)
-  ...
+  <BLANKLINE>
+  >...
 
   ... >>> print(build_log.read())
   ... >>> print(protractor.before)
@@ -115,6 +116,12 @@ we will need the before and after expect match.
   >>> r = http_server.sendcontrol('c')
   >>> http_server.close()
   >>> print(npm_log.read())
+
+Try to print the whole npm log file.
+::
+
+  >>> log = pexpect.run('cat %s' % npm_log_file)
+  >>> print(log)
 
 clean up
 --------
