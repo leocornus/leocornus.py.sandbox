@@ -102,6 +102,7 @@ show the e2e test result.
 ::
 
   >>> print(protractor)
+  ...
 
   ... >>> print(build_log.read())
   ... >>> print(protractor.before)
