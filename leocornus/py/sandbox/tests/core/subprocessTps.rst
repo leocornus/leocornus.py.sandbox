@@ -58,8 +58,8 @@ we cannot use >> in check_output.
   ...   output = cpe.output
   ...   returncode = cpe.returncode
   >>> print(output)
-  ls: >>: No such file or directory
-  ls: log: No such file or directory
+  ls: ... No such file or directory
+  ls: ... No such file or directory
   >>> print(returncode)
   2
 
@@ -77,6 +77,21 @@ We could use the **stdout** parameter of check_output
   >>> log = open('log', 'r')
   >>> print(log.read())
   total ...
+
+Test error return code, by find some no exist file.
+::
+
+  >>> log = open('log', 'w')
+  >>> try:
+  ...   returncode = check_call(["ls", "-la", 'noexist'], stdout=log,
+  ...                           stderr=STDOUT)
+  ... except CalledProcessError as cpe:
+  ...   returncode = cpe.returncode
+  >>> print(returncode)
+  2 
+  >>> log = open('log', 'r')
+  >>> print(log.read())
+  ls: ... No such file or directory
 
 remove the testing log file.
 ::
