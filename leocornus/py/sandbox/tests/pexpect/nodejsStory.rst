@@ -120,7 +120,7 @@ we will need the before and after expect match.
 Try to print the whole npm log file.
 ::
 
-  >>> log = read(npm_log_file)
+  >>> log = open(npm_log_file)
   >>> content = log.read()
   >>> print(content)
   <BLANKLINE>
