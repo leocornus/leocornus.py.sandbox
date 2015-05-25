@@ -124,7 +124,7 @@ Try to print the whole npm log file.
   >>> content = log.read()
   >>> print(content)
   <BLANKLINE>
-  >an...
+  >...
 
 clean up
 --------
