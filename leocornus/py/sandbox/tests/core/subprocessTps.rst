@@ -7,6 +7,7 @@ import modules and utilities::
   >>> from subprocess import PIPE
   >>> from subprocess import Popen
   >>> from subprocess import check_output
+  >>> from subprocess import check_call
   >>> from subprocess import CalledProcessError
 
 check_output and exit status
@@ -41,6 +42,47 @@ We need set the **stderr** to be **subprocess.STDOUT**.
   True
   >>> print(returncode)
   2
+
+check_output and >>
+-------------------
+
+we cannot use >> in check_output.
+::
+
+  >>> file_name = 'log'
+  >>> try:
+  ...   output = check_output(["ls", "-la", ">>", file_name], 
+  ...                         stderr=STDOUT)
+  ...   returncode = 0
+  ... except CalledProcessError as cpe:
+  ...   output = cpe.output
+  ...   returncode = cpe.returncode
+  >>> print(output)
+  ls: >>: No such file or directory
+  ls: log: No such file or directory
+  >>> print(returncode)
+  2
+
+We could use the **stdout** parameter of check_output
+::
+
+  >>> log = open('log', 'w')
+  >>> try:
+  ...   returncode = check_call(["ls", "-la"], stdout=log,
+  ...                           stderr=STDOUT)
+  ... except CalledProcessError as cpe:
+  ...   returncode = cpe.returncode
+  >>> print(returncode)
+  0
+  >>> log = open('log', 'r')
+  >>> print(log.read())
+  total ...
+
+remove the testing log file.
+::
+
+  >>> rm = check_output(['rm', 'log'])
+  >>> print(rm)
 
 check_output and pipe
 ---------------------
