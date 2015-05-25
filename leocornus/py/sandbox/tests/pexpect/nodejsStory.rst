@@ -120,9 +120,11 @@ we will need the before and after expect match.
 Try to print the whole npm log file.
 ::
 
-  >>> log = pexpect.run('cat %s' % npm_log_file)
-  >>> print(log)
-  <BLANKLINE>...
+  >>> log = read(npm_log_file)
+  >>> content = log.read()
+  >>> print(content)
+  <BLANKLINE>
+  >an...
 
 clean up
 --------
