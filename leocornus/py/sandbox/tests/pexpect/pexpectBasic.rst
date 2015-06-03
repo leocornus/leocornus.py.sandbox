@@ -38,8 +38,9 @@ Redirect > and >> will not work in function **run**.
   >>> log = open('.log')
   >>> output = log.read()
   >>> print(output)
-  First Line
-  Sencod Line
+  ls -la
+  ------
+  ...
   >>> output = pexpect.run('rm .log')
 
 Basic spawn
