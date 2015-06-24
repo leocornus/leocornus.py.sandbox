@@ -117,6 +117,7 @@ no let execute those script.
   ...     r = local('git config url."https://".insteadof git://')
   ...     r = local('%s >> .log' % install[0], False)
   ...     r = local('%s >> .log' % script[0], False)
+  ...     r = local('npm run protractor >> .log',  False)
   ...     r = local('cat .log', False)
   [localhost] local: git config url."https://".insteadof git://
   [localhost] local: npm install >> .log
