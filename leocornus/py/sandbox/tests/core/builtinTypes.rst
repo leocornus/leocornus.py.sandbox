@@ -22,3 +22,15 @@ list
   >>> m, n = l
   >>> print(n)
   5
+
+string
+------
+
+How to ::
+
+  >>> a = 'abc'
+  >>> b = 'cde'
+  >>> a + b
+  'abccde'
+  >>> b + a
+  'cdeabc'
