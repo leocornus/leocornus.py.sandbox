@@ -1,0 +1,5 @@
+# compile py file.
+*.pyc
+
+# vim temp files
+*.swp
