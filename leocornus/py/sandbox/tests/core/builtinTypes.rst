@@ -34,3 +34,10 @@ How to ::
   'abccde'
   >>> b + a
   'cdeabc'
+
+The behavour around multi lines::
+
+  >>> a = 'abc\ncde'
+  >>> print(a)
+  abc
+  cde
