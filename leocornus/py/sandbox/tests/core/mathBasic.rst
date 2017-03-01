@@ -19,7 +19,7 @@ define the function::
   ...     # add the biggest section
   ...     ret.append(intSqrt * intSqrt)
   ...     # handle the remaining area.
-  ...     if remainArea > 4:
+  ...     if remainArea >= 4:
   ...         # the remaining area is big enough for another square root
   ...         ret = ret + answer(remainArea)
   ...     else:
@@ -33,3 +33,21 @@ verify
 
   >>> print answer(12)
   [9, 1, 1, 1]
+
+  >>> print answer(15324)
+  [15129, 169, 25, 1]
+
+  >>> print answer(15323)
+  [15129, 169, 25]
+
+  >>> print answer(1)
+  [1]
+
+  >>> print answer(0)
+  [0]
+
+  >>> print answer(4)
+  [4]
+
+  >>> print answer(13)
+  [9, 4]
