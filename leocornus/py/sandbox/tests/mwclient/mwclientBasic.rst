@@ -87,7 +87,7 @@ Create function to have better control.
   ... Success"""
   ...         return # do nothing.
   ...     # we have everything now.
-  ...     site = mwclient.Site(mwinfo['host'], path=mwinfo['path'])
+  ...     site = mwclient.Site(('http', mwinfo['host']), path=mwinfo['path'])
   ...     print(site) # doctest: +ELLIPSIS
   ...     site.login(mwinfo['username'], mwinfo['password'])
   ...     testPage = site.Pages['Testing Page']
