@@ -10,8 +10,6 @@ import libs::
 
   >>> import os
   >>> import json
-  >>> from apiclient.discovery import build
-  >>> from oauth2client.service_account import ServiceAccountCredentials
 
 set up some variables::
   >>> SCOPES = ['https://www.googleapis.com/auth/analytics.readonly']
@@ -24,21 +22,9 @@ verify ::
   >>> print(KEY_FILE_LOCATION)
   /home...secret.json
 
-define some functions::
+define some functions, initialize and connect to Google.::
 
-  >>> def initialize_analyticsreporting():
-  ...   """Initializes an Analytics Reporting API V4 service object.
-  ... 
-  ...   Returns:
-  ...     An authorized Analytics Reporting API V4 service object.
-  ...   """
-  ...   credentials = ServiceAccountCredentials.from_json_keyfile_name(
-  ...       KEY_FILE_LOCATION, SCOPES)
-  ... 
-  ...   # Build the service object.
-  ...   analytics = build('analytics', 'v4', credentials=credentials)
-  ... 
-  ...   return analytics
+  >>> from leocornus.py.sandbox.utils_google import initialize_analyticsreporting
 
 function to get report::
 
@@ -89,7 +75,7 @@ utility function to print the response::
 
 Now let's execute it...::
 
-  >>> analytics = initialize_analyticsreporting()
+  >>> analytics = initialize_analyticsreporting(KEY_FILE_LOCATION, SCOPES)
   >>> response = get_report(analytics)
   >>> len(response['reports'][0]['data']['rows'])
 
