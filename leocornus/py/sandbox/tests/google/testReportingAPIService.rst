@@ -2,9 +2,9 @@ Test Google Reporting API Python Interface
 ==========================================
 
 Follow quicksart for Python: 
-https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/installed-py
+https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/service-py
 
-Save the secret.json as ~/secret.json.
+Save the client-secret.json as ~/client-secret.json.
 
 import libs::
 
