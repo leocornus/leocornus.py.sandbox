@@ -21,3 +21,18 @@ The function **loads** will parse or decode json string::
   >>> jsonObj = json.loads(jsonString)
   >>> print(jsonObj)
   {u'a': u'one', u'b': u'two'}
+
+Now, we have a object. Let's try the encode it to string.
+In some case, we also call it stringify.::
+
+  >>> stringAgain = json.dumps(jsonObj)
+  >>> print(stringAgain)
+  {"a": "one", "b": "two"}
+
+Here is how to make it pretty.::
+
+  >>> print(json.dumps(jsonObj, sort_keys=True, indent=2))
+  {
+    "a": "one",
+    "b": "two"
+  }
