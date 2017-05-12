@@ -11,8 +11,7 @@ Set up testing
 --------------
 
 Create the testing folder.
-All temporary testing files will be stored here.
-::
+All temporary testing files will be stored here.::
 
   >>> import os
   >>> from leocornus.py.sandbox.utils_basic import create_file
