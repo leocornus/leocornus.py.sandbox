@@ -91,7 +91,9 @@ Now let's execute it...::
 
   >>> analytics = initialize_analyticsreporting()
   >>> response = get_report(analytics)
-  >>> print(json.dumps(response, sort_keys=True, indent=2))
+  >>> len(response['reports'][0]['data']['rows'])
+
+  >>> #print(json.dumps(response, sort_keys=True, indent=2))
 
   >>> print_response(response)
   ga:pagePath...
