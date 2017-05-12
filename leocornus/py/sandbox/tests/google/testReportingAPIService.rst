@@ -9,6 +9,7 @@ Save the client-secret.json as ~/client-secret.json.
 import libs::
 
   >>> import os
+  >>> import json
   >>> from apiclient.discovery import build
   >>> from oauth2client.service_account import ServiceAccountCredentials
 
@@ -48,6 +49,7 @@ function to get report::
   ...         'reportRequests': [
   ...         {
   ...           'viewId': VIEW_ID,
+  ...           'pageSize': 10000,
   ...           'dateRanges': [{'startDate': '2017-05-01', 'endDate': '2017-05-01'}],
   ...           'metrics': [
   ...             {'expression': 'ga:sessions'},
@@ -89,7 +91,7 @@ Now let's execute it...::
 
   >>> analytics = initialize_analyticsreporting()
   >>> response = get_report(analytics)
-  >>> response
+  >>> print(json.dumps(response, sort_keys=True, indent=2))
 
   >>> print_response(response)
   ga:pagePath...
