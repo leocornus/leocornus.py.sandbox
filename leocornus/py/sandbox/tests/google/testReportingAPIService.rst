@@ -48,11 +48,16 @@ function to get report::
   ...         'reportRequests': [
   ...         {
   ...           'viewId': VIEW_ID,
-  ...           'dateRanges': [{'startDate': '7daysAgo', 'endDate': 'today'}],
+  ...           'dateRanges': [{'startDate': '2017-05-01', 'endDate': '2017-05-01'}],
   ...           'metrics': [
   ...             {'expression': 'ga:sessions'},
   ...             {'expression': 'ga:pageviews'}
-  ...           ]
+  ...           ],
+  ...           'dimensions': [
+  ...             {
+  ...               'name': 'ga:pagePath'
+  ...             }
+  ...           ],
   ...         }]
   ...       }
   ...   ).execute()
@@ -84,4 +89,7 @@ Now let's execute it...::
 
   >>> analytics = initialize_analyticsreporting()
   >>> response = get_report(analytics)
+  >>> response
+
   >>> print_response(response)
+  ga:pagePath...
