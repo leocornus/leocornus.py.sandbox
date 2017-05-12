@@ -17,7 +17,7 @@
 from oauth2client.service_account import ServiceAccountCredentials
 from apiclient.discovery import build
 
-def initialize_analyticsreporting(key_file, scopes):
+def init_gareporting(key_file, scopes):
   """Initializes an Analytics Reporting API V4 service object.
 
   Returns:
@@ -30,3 +30,29 @@ def initialize_analyticsreporting(key_file, scopes):
   analytics = build('analytics', 'v4', credentials=credentials)
 
   return analytics
+
+# sample function to execute the batch get report.
+# the main purpose here is for demostration.
+# normally we will use the batchGet directly.
+# the challenge part it get ready the reportRequests object.
+def get_report(analytics, view_id):
+  # Use the Analytics Service Object to query the Analytics Reporting API V4.
+  return analytics.reports().batchGet(
+      body={
+        'reportRequests': [
+        {
+          'viewId': view_id,
+          'pageSize': 10000,
+          'dateRanges': [{'startDate': '2017-05-01', 'endDate': '2017-05-01'}],
+          'metrics': [
+            {'expression': 'ga:sessions'},
+            {'expression': 'ga:pageviews'}
+          ],
+          'dimensions': [
+            {
+              'name': 'ga:pagePath'
+            }
+          ],
+        }]
+      }
+  ).execute()

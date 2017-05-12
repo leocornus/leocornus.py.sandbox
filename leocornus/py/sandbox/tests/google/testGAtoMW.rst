@@ -12,6 +12,7 @@ import libs::
   >>> import json
 
 set up some variables::
+
   >>> SCOPES = ['https://www.googleapis.com/auth/analytics.readonly']
   >>> homeFolder = os.path.expanduser('~')
   >>> KEY_FILE_LOCATION = os.path.join(homeFolder, 'client-secret.json')
@@ -24,31 +25,11 @@ verify ::
 
 define some functions, initialize and connect to Google.::
 
-  >>> from leocornus.py.sandbox.utils_google import initialize_analyticsreporting
+  >>> from leocornus.py.sandbox.utils_google import init_gareporting
 
 function to get report::
 
-  >>> def get_report(analytics):
-  ...   # Use the Analytics Service Object to query the Analytics Reporting API V4.
-  ...   return analytics.reports().batchGet(
-  ...       body={
-  ...         'reportRequests': [
-  ...         {
-  ...           'viewId': VIEW_ID,
-  ...           'pageSize': 10000,
-  ...           'dateRanges': [{'startDate': '2017-05-01', 'endDate': '2017-05-01'}],
-  ...           'metrics': [
-  ...             {'expression': 'ga:sessions'},
-  ...             {'expression': 'ga:pageviews'}
-  ...           ],
-  ...           'dimensions': [
-  ...             {
-  ...               'name': 'ga:pagePath'
-  ...             }
-  ...           ],
-  ...         }]
-  ...       }
-  ...   ).execute()
+  >>> from leocornus.py.sandbox.utils_google import get_report
 
 utility function to print the response::
 
@@ -75,8 +56,8 @@ utility function to print the response::
 
 Now let's execute it...::
 
-  >>> analytics = initialize_analyticsreporting(KEY_FILE_LOCATION, SCOPES)
-  >>> response = get_report(analytics)
+  >>> analytics = init_gareporting(KEY_FILE_LOCATION, SCOPES)
+  >>> response = get_report(analytics, VIEW_ID)
   >>> len(response['reports'][0]['data']['rows'])
 
   >>> #print(json.dumps(response, sort_keys=True, indent=2))
