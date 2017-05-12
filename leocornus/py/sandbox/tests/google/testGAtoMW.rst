@@ -33,26 +33,7 @@ function to get report::
 
 utility function to print the response::
 
-  >>> def print_response(response):
-  ...   """Parses and prints the Analytics Reporting API V4 response"""
-  ... 
-  ...   for report in response.get('reports', []):
-  ...     columnHeader = report.get('columnHeader', {})
-  ...     dimensionHeaders = columnHeader.get('dimensions', [])
-  ...     metricHeaders = columnHeader.get('metricHeader', {}).get('metricHeaderEntries', [])
-  ...     rows = report.get('data', {}).get('rows', [])
-  ... 
-  ...     for row in rows:
-  ...       dimensions = row.get('dimensions', [])
-  ...       dateRangeValues = row.get('metrics', [])
-  ... 
-  ...       for header, dimension in zip(dimensionHeaders, dimensions):
-  ...         print header + ': ' + dimension
-  ... 
-  ...       for i, values in enumerate(dateRangeValues):
-  ...         print 'Date range (' + str(i) + ')'
-  ...         for metricHeader, value in zip(metricHeaders, values.get('values')):
-  ...           print metricHeader.get('name') + ': ' + value
+  >>> from leocornus.py.sandbox.utils_google import print_response 
 
 Now let's execute it...::
 
