@@ -73,11 +73,18 @@ Here are the structure of each row we will have::
     ]
   }
 
-Now let's get the structure we want.::
+Now let's get the structure we want.
+The built-in funtion int() will convert string to int.::
 
   >>> for row in rows:
   ...   pages.append([row.get('dimensions', [])[0],
-  ...           row['metrics'][0]['values'][0], # this is sessions.
-  ...           row['metrics'][0]['values'][1]])
+  ...       int(row['metrics'][0]['values'][0]), # this is sessions.
+  ...       int(row['metrics'][0]['values'][1])])
   >>> len(pages) > 0
   True
+
+sort the pages by pageviews.::
+
+  >>> sortedPages = sorted(pages, key=lambda page: page[2],
+  ...                      reverse=True)
+  >>> print(sortedPages[0])
