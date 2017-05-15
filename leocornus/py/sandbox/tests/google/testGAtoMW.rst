@@ -39,9 +39,45 @@ Now let's execute it...::
 
   >>> analytics = init_gareporting(KEY_FILE_LOCATION, SCOPES)
   >>> response = get_report(analytics, VIEW_ID)
-  >>> len(response['reports'][0]['data']['rows'])
 
   >>> #print(json.dumps(response, sort_keys=True, indent=2))
 
   >>> print_response(response)
   ga:pagePath...
+
+Now let dive into the repose data structure.
+The rows will have the report data.::
+
+  >>> rows = response['reports'][0]['data']['rows']
+  >>> len(rows) > 0
+  True
+
+Let's try to go through each rows.::
+
+  >>> pages = []
+
+Here are the structure of each row we will have::
+
+  print(json.dumps(rows[0], indent=2))
+  {
+    "metrics": [
+      {
+        "values": [
+          "88",
+          "337"
+        ]
+      }
+    ],
+    "dimensions": [
+      "/"
+    ]
+  }
+
+Now let's get the structure we want.::
+
+  >>> for row in rows:
+  ...   pages.append([row.get('dimensions', [])[0],
+  ...           row['metrics'][0]['values'][0], # this is sessions.
+  ...           row['metrics'][0]['values'][1]])
+  >>> len(pages) > 0
+  True
