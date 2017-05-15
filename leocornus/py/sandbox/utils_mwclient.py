@@ -78,7 +78,7 @@ def mw_get_site(mwrc=None):
         mwinfo['username'] = rc.get('mwclient', 'username')
         mwinfo['password'] = rc.get('mwclient', 'password')
         # TODO: need check if those values are set properly!
-        site = mwclient.Site(mwinfo['host'], path=mwinfo['path'])
+        site = mwclient.Site(('http', mwinfo['host']), path=mwinfo['path'])
         site.login(mwinfo['username'], mwinfo['password'])
 
     return site 
@@ -177,7 +177,7 @@ class MwrcSite(object):
             mwinfo = dict(rc.items('mwclient'))
             # TODO: need check if those values are set properly!
             if mwinfo.has_key('host'):
-                self.site = mwclient.Site(mwinfo['host'], 
+                self.site = mwclient.Site(('http', mwinfo['host']), 
                                           path=mwinfo['path'])
                 self.site.login(mwinfo['username'], 
                                 mwinfo['password'])
