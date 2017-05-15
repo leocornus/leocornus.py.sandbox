@@ -36,3 +36,20 @@ Here is how to make it pretty.::
     "a": "one",
     "b": "two"
   }
+
+List and JSON
+-------------
+
+How list convert to JSON.::
+
+  >>> aList = [1, 2, 'abc']
+  >>> aListJson = json.dumps(aList)
+  >>> print(aListJson)
+  [1, 2, "abc"]
+
+Python List is more like JSON array.::
+
+  >>> aList = ['again', aList]
+  >>> aListJson = json.dumps(aList)
+  >>> print(aListJson)
+  ["again", [1, 2, "abc"]]
