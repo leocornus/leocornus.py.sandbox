@@ -97,3 +97,9 @@ try to save the report as wiki page.::
   >>> pageTitle = "User:Admin/traffic/opspedia/day-" + DATE + ".json"
   >>> comment = "daily report - " + DATE
   >>> site.create_page(pageTitle, json.dumps(sortedPages), comment)
+
+Testing the utilities function.::
+
+  >>> from leocornus.py.sandbox.utils_google import generate_reports
+  >>> dates = ['2017-05-09', '2017-05-10', '2017-05-11']
+  >>> generate_reports(analytics, VIEW_ID, dates)

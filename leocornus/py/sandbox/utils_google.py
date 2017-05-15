@@ -14,8 +14,10 @@
 
 # dependences:
 
+import json
 from oauth2client.service_account import ServiceAccountCredentials
 from apiclient.discovery import build
+from leocornus.py.sandbox.utils_mwclient import MwrcSite
 
 def init_gareporting(key_file, scopes):
   """Initializes an Analytics Reporting API V4 service object.
@@ -80,4 +82,29 @@ def print_response(response):
         for metricHeader, value in zip(metricHeaders, values.get('values')):
           print metricHeader.get('name') + ': ' + value
 
+# generate the report for a date range.
+def generate_reports(analytics, view_id, date_range):
+    """here are what we will do:
+    * query report,
+    * parse into prefered format.
+    * sort into wiki page.
+    the date_range will be a list of date, for example:
+    ['2017-05-05', [2017-05-06']
+    """
 
+    for date in date_range:
+        response = get_report(analytics, view_id, date)
+        rows = response['reports'][0]['data']['rows']
+        pages = []
+        for row in rows:
+            pages.append([row['dimensions'][0],
+                  int(row['metrics'][0]['values'][0]), 
+                  int(row['metrics'][0]['values'][1])])
+        # sort by pageviews.
+        sortedPages = sorted(pages, key=lambda page: page[2],
+                             reverse=True)
+        # sort the result.
+        site = MwrcSite()
+        pageTitle = "User:Admin/traffic/opspedia/day-" + date + ".json"
+        comment = "daily report - " + date 
+        site.create_page(pageTitle, json.dumps(sortedPages), comment)
