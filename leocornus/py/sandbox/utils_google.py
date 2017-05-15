@@ -35,7 +35,7 @@ def init_gareporting(key_file, scopes):
 # the main purpose here is for demostration.
 # normally we will use the batchGet directly.
 # the challenge part it get ready the reportRequests object.
-def get_report(analytics, view_id):
+def get_report(analytics, view_id, date):
   # Use the Analytics Service Object to query the Analytics Reporting API V4.
   return analytics.reports().batchGet(
       body={
@@ -43,7 +43,7 @@ def get_report(analytics, view_id):
         {
           'viewId': view_id,
           'pageSize': 10000,
-          'dateRanges': [{'startDate': '2017-05-01', 'endDate': '2017-05-01'}],
+          'dateRanges': [{'startDate': date, 'endDate': date}],
           'metrics': [
             {'expression': 'ga:sessions'},
             {'expression': 'ga:pageviews'}
@@ -79,3 +79,5 @@ def print_response(response):
         print 'Date range (' + str(i) + ')'
         for metricHeader, value in zip(metricHeaders, values.get('values')):
           print metricHeader.get('name') + ': ' + value
+
+

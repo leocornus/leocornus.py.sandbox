@@ -17,6 +17,7 @@ set up some variables::
   >>> homeFolder = os.path.expanduser('~')
   >>> KEY_FILE_LOCATION = os.path.join(homeFolder, 'client-secret.json')
   >>> VIEW_ID = '41055556' 
+  >>> DATE = '2017-05-08'
 
 verify ::
 
@@ -38,7 +39,7 @@ utility function to print the response::
 Now let's execute it...::
 
   >>> analytics = init_gareporting(KEY_FILE_LOCATION, SCOPES)
-  >>> response = get_report(analytics, VIEW_ID)
+  >>> response = get_report(analytics, VIEW_ID, DATE)
 
   >>> #print(json.dumps(response, sort_keys=True, indent=2))
 
@@ -87,4 +88,12 @@ sort the pages by pageviews.::
 
   >>> sortedPages = sorted(pages, key=lambda page: page[2],
   ...                      reverse=True)
-  >>> print(sortedPages[0])
+  >>> print(sortedPages[1])
+
+try to save the report as wiki page.::
+
+  >>> from leocornus.py.sandbox.utils_mwclient import MwrcSite
+  >>> site = MwrcSite()
+  >>> pageTitle = "User:Admin/traffic/opspedia/day-" + DATE + ".json"
+  >>> comment = "daily report - " + DATE
+  >>> site.create_page(pageTitle, json.dumps(sortedPages), comment)
