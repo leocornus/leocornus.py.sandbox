@@ -29,6 +29,8 @@ get the time range inclusively::
   ...     start += step
   >>> print(dates[0])
   2017-04-01
+  >>> print(dates[54])
+  2017-05-25
 
 check the total dates::
 
