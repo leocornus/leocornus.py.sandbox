@@ -25,7 +25,8 @@ set up the step using timedelta method::
 get the time range inclusively::
 
   >>> while start <= end:
-  ...     dates.append(start.date())
+  ...     #dates.append(start.date())
+  ...     dates.append(start.strftime('%Y-%m-%d'))
   ...     start += step
   >>> print(dates[0])
   2017-04-01
@@ -36,3 +37,16 @@ check the total dates::
 
   >>> len(dates)
   55
+
+Let's try set the end date the same with start date.
+Reset the dates::
+
+  >>> start = datetime.datetime.strptime(startDate, '%Y-%m-%d')
+  >>> end = datetime.datetime.strptime(startDate, '%Y-%m-%d')
+
+  >>> dates = []
+  >>> while start <= end:
+  ...     dates.append(start.strftime('%Y-%m-%d'))
+  ...     start += step
+  >>> print(dates)
+  ['2017-04-01']
