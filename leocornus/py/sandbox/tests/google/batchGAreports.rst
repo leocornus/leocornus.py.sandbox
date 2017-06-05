@@ -35,8 +35,8 @@ Testing the utilities function.::
 get ready the list of dates::
 
   >>> import datetime
-  >>> startDate = '2017-04-01'
-  >>> endDate = '2017-5-30'
+  >>> startDate = '2014-01-01'
+  >>> endDate = '2014-12-31'
   >>> start = datetime.datetime.strptime(startDate, '%Y-%m-%d')
   >>> end = datetime.datetime.strptime(endDate, '%Y-%m-%d')
   >>> step = datetime.timedelta(days=1)
@@ -45,7 +45,8 @@ get ready the list of dates::
   ...     dates.append(start.strftime('%Y-%m-%d'))
   ...     start += step
 
-execute query and save the report.::
+execute query and save the report. It will take about 30 minutes to 
+process a whole year's data.::
 
   >>> generate_reports(analytics, VIEW_ID, dates)
 
